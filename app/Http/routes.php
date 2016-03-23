@@ -11,10 +11,41 @@
 |
 */
 
-Route::group(['middleware' => ['web']], function () {
+// 全局中间件 位于Http/Kernel
+// 
 
-    Route::get('/', function () {
-        return view('welcome');
-    });
 
+Route::get('/', 'HomeController@index')->name('home');
+
+
+
+/**
+ * Frontend Access Controllers
+ */
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('auth/logout', 'AuthController@getLogout');
+    Route::get('auth/password/change', 'PasswordController@getChangePassword');
 });
+Route::group(['middleware' => 'guest'], function () use ($router) {
+
+    //隐式控制器
+    Route::controller('auth', 'AuthController');
+    Route::controller('password', 'PasswordController');
+});
+
+
+
+
+/**
+ * Backend Routes
+ * Namespaces indicate folder structure
+ * Admin middleware groups web, auth, and routeNeedsPermission
+ */
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
+    
+    Route::get('dashboard', 'DashboardController@index')->name('admin.dashboard');
+});
+
+
+
+
