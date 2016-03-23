@@ -40,9 +40,7 @@ class AuthController extends Controller
      * @return \Illuminate\View\View
      */
     public function getLogin()
-    {   
-        //$a = password_verify("aaa","$2y$10$4njfxcOns7owb4C85nbJjeQ/yHSzvVfiGq9GH8wu2ukGjiNzqMU4G");
-        //var_dump($a);
+    {
         return view('auth.login');
     }
 
@@ -51,11 +49,18 @@ class AuthController extends Controller
         //print_r($request->all());
         $r = $request->all();
 
-        if (\Auth::attempt(['username' => $r["username"], 'password' => $r["password"]])) {
+
+
+        $user = User::whereRaw("username = ? and password = ?  ",[ $r["username"] , sha1($r["password"]) ])->get();;
+
+        if(isset($user[0]) ){
+
+            \Auth::login($user[0]);
             // 认证通过...
-            
+            \Auth::User()->update(["last_login_time"=>date("Y-m-d H:i:s",time())]);
             return redirect()->route('home');
         }
+
 
         return redirect('/auth/login');
     }
@@ -115,6 +120,8 @@ class AuthController extends Controller
             'username' => $data['username'],
             'email' => $data['email'],
             'password' => sha1($data['password']),
+            "register_time" => date("Y-m-d H:i:s",time()),
+            "last_login_time"=> date("Y-m-d H:i:s",time()),
         ]);
     }
 }
