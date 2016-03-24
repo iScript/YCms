@@ -29,7 +29,6 @@ class RegisterRequest extends Request
     {
         return [
             'username'     => 'required|max:255',
-            'email'    => 'required|email|max:255|unique:iz_users',
             'password' => 'required|min:3',
         ];
     }

@@ -7,10 +7,13 @@
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
-        "barryvdh/laravel-debugbar": "^2.2",
-        "barryvdh/laravel-ide-helper": "*"
+        "arcanedev/log-viewer": "~3.0"
+
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^2.2",
+        "barryvdh/laravel-ide-helper": "*",
+
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~4.0",

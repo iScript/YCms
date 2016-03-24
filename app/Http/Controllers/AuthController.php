@@ -51,11 +51,10 @@ class AuthController extends Controller
 
 
 
-        $user = User::whereRaw("username = ? and password = ?  ",[ $r["username"] , sha1($r["password"]) ])->get();;
+        $user = User::whereRaw("username = ? and password = ?  ",[ $r["username"] , sha1($r["password"]) ])->first();
+        if(isset($user) ){
 
-        if(isset($user[0]) ){
-
-            \Auth::login($user[0]);
+            \Auth::login($user);
             // 认证通过...
             \Auth::User()->update(["last_login_time"=>date("Y-m-d H:i:s",time())]);
             return redirect()->route('home');
@@ -74,7 +73,7 @@ class AuthController extends Controller
      * @return \Illuminate\View\View
      */
     public function getRegister()
-    {   
+    {
         return view('auth.register');
     }
 
@@ -83,7 +82,9 @@ class AuthController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postRegister(RegisterRequest $request)
-    {   
+    {
+
+
         \Auth::login($this->create($request->all()));
         
         //
@@ -103,7 +104,7 @@ class AuthController extends Controller
     {   
         return Validator::make($data, [
             'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
+            //'email' => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
         ]);
     }
@@ -118,7 +119,7 @@ class AuthController extends Controller
     {   
         return User::create([
             'username' => $data['username'],
-            'email' => $data['email'],
+            //'email' => $data['email'],
             'password' => sha1($data['password']),
             "register_time" => date("Y-m-d H:i:s",time()),
             "last_login_time"=> date("Y-m-d H:i:s",time()),

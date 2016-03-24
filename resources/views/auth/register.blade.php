@@ -6,14 +6,30 @@
 		<p>{{$err}}</p>
 		@endforeach
 	@endif
-	<form action="/auth/register" method="post">
-		用户名：<input type="text" name="username" />
-		email : <input type="text" name="email" />
-		passowrd : <input type="password" name="password" />
-		<input type="hidden" name="_token" value="{{ csrf_token() }}">
-		<input type="submit" name="send" value="send" />
 
+
+
+
+	<form class="pure-form pure-form-aligned" method="post" action="/auth/register">
+		<fieldset>
+			<div class="pure-control-group">
+				<label for="name">用户名</label>
+				<input id="name" type="text" placeholder="Username" name="username">
+			</div>
+
+			<div class="pure-control-group">
+				<label for="password">密码</label>
+				<input id="password" type="password" placeholder="Password" name="password">
+			</div>
+
+
+			<div class="pure-controls">
+
+				<button type="submit" name="send" class="pure-button pure-button-primary">注册</button>
+			</div>
+		</fieldset>
 	</form>
 
-	
+
+
 @endsection
