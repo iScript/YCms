@@ -17,8 +17,8 @@
 
 Route::get('/', 'HomeController@index')->name('home');
 
-
-
+Route::get('/test', 'HomeController@test');
+Route::get('/test2', 'HomeController@test2');
 /**
  * Frontend Access Controllers
  */
