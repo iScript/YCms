@@ -20,7 +20,10 @@ $(".y-click").click(function(){
     var method = $(this).attr("y-method");
     var data = {};
     $.ajax({url:url,method:method,data:data, success:function(result){
-
+        if(result.code == 200){
+            alert(result.message);location.reload();return;
+        }
+        alert(result.message);
 
     }});
 });

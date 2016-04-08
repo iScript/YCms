@@ -49,10 +49,12 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //$result = User::find($id)->delete();
-       // var_dump($result);
-        //$this->users->destroy($id);
-        //return redirect()->back()->withFlashSuccess(trans('alerts.backend.users.deleted'));
+        $result = User::find($id)->delete();
+        if($result == true){
+            return response()->json(["code"=>200,"message"=>"删除成功","data"=>[]]);
+        }
+        return response()->json(["code"=>400,"message"=>"删除失败","data"=>[]]);
+
     }
 
 

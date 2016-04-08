@@ -32,6 +32,13 @@
             <li class="header">HEADER</li>
             <!-- Optionally, you can add icons to the links -->
             <li class="active"><a href="#"><i class="fa fa-link"></i> <span>控制台</span></a></li>
+            <li><a href="#"><i class="fa fa-link"></i> <span>内容管理</span></a>
+
+                <ul class="treeview-menu">
+                    <li><a href="/admin/user" >文章列表</a></li>
+
+                </ul>
+            </li>
             <li><a href="#"><i class="fa fa-link"></i> <span>会员管理</span></a>
 
                 <ul class="treeview-menu">
