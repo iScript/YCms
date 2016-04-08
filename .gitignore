@@ -3,3 +3,5 @@ storage/*
 composer.develop.json
 composer.develop.lock
 composer.lock
+
+.idea/workspace.xml
