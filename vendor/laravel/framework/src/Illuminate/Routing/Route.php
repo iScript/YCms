@@ -242,11 +242,26 @@ class Route
             $middleware = [$middleware];
         }
 
-        $this->action['middleware'] = array_merge(
+        $this->action['middleware'] = array_unique(array_merge(
             (array) Arr::get($this->action, 'middleware', []), $middleware
-        );
+        ));
 
         return $this;
+    }
+
+    /**
+     * Get the controller middleware for the route.
+     *
+     * @return array
+     */
+    protected function controllerMiddleware()
+    {
+        list($class, $method) = explode('@', $this->action['uses']);
+
+        $controller = $this->container->make($class);
+
+        return (new ControllerDispatcher($this->router, $this->container))
+            ->getMiddleware($controller, $method);
     }
 
     /**

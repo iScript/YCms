@@ -675,6 +675,17 @@ class BladeCompiler extends Compiler implements CompilerInterface
     }
 
     /**
+     * Compile the has section statements into valid PHP.
+     *
+     * @param  string  $expression
+     * @return string
+     */
+    protected function compileHasSection($expression)
+    {
+        return "<?php if (! empty(trim(\$__env->yieldContent{$expression}))): ?>";
+    }
+
+    /**
      * Compile the while statements into valid PHP.
      *
      * @param  string  $expression
@@ -846,7 +857,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
      */
     protected function compileStack($expression)
     {
-        return "<?php echo \$__env->yieldContent{$expression}; ?>";
+        return "<?php echo \$__env->yieldPushContent{$expression}; ?>";
     }
 
     /**
@@ -857,7 +868,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
      */
     protected function compilePush($expression)
     {
-        return "<?php \$__env->startSection{$expression}; ?>";
+        return "<?php \$__env->startPush{$expression}; ?>";
     }
 
     /**
@@ -868,7 +879,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
      */
     protected function compileEndpush($expression)
     {
-        return '<?php $__env->appendSection(); ?>';
+        return '<?php $__env->stopPush(); ?>';
     }
 
     /**

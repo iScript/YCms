@@ -1,0 +1,66 @@
+@extends('admin.layouts.master')
+
+@section('page-header')
+    <h1>
+        用户列表
+        <small>...</small>
+
+        <a type="button" class="pull-right btn btn-success btn-sm" href="/admin/user/create"><i class="fa fa-times-circle"></i> 新增</a>
+
+    </h1>
+@endsection
+
+@section('content')
+
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title ">用户列表</h3>
+
+                <div class="box-tools">
+
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                        <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover">
+                    <tbody><tr>
+                        <th>ID</th>
+                        <th>用户名</th>
+                        <th>邮箱</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+
+                    @foreach ($users as $user)
+                    <tr>
+                        <td>{!! $user->id !!}</td>
+                        <td>{!! $user->username !!}</td>
+                        <td>{!! $user->email !!}</td>
+                        <td><span class="label label-warning">{!! $user->status !!}</span></td>
+                        <td><button type="button" class="btn btn-danger btn-sm y-click" y-url="/admin/user/{{$user->id}}" y-method="delete">删除</button></td>
+                    </tr>
+                    @endforeach
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <div class="pull-right">
+                    {!! $users->render() !!}
+                </div>
+            </div>
+
+        </div>
+        <!-- /.box -->
+
+@endsection
