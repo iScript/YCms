@@ -7,6 +7,7 @@
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
+        "qiniu/php-sdk": "*",
         "arcanedev/log-viewer": "~3.0"
 
     },

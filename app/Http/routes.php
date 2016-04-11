@@ -52,4 +52,6 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
 
 
 
+Route::post("upload","QiniuController@simditor_upload");
+
 

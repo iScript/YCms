@@ -20,4 +20,5 @@ return array(
     '58571171fd5812e6e447dce228f52f4d' => $vendorDir . '/laravel/framework/src/Illuminate/Support/helpers.php',
     'd04e9322f14ab3e66b5b68c6d1e15433' => $vendorDir . '/arcanedev/log-viewer/constants.php',
     '24be6d98d7c305f36699ba4e34b6df3c' => $vendorDir . '/arcanedev/log-viewer/helpers.php',
+    '841780ea2e1d6545ea3a253239d59c05' => $vendorDir . '/qiniu/php-sdk/src/Qiniu/functions.php',
 );
