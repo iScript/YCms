@@ -11,4 +11,7 @@ class Article extends Model
 
     protected $table = 'iz_articles';
 
+
+    protected $fillable = ['title', 'description', 'content',"published_at","uid"];
+
 }

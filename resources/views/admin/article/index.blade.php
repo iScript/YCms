@@ -44,7 +44,10 @@
                         <td>{!! $obj->title !!}</td>
                         <td>{!! $obj->published_at !!}</td>
                         <td><span class="label label-warning">{!! $obj->status !!}</span></td>
-                        <td><button type="button" class="btn btn-danger btn-sm y-click" y-url="/admin/article/{{$obj->id}}" y-method="delete">删除</button></td>
+                        <td>
+                            <a href="/admin/article/{{$obj->id}}/edit" class="btn btn-success btn-sm ">编辑</a>
+                            <button type="button" class="btn btn-danger btn-sm y-click" y-url="/admin/article/{{$obj->id}}" y-method="delete">删除</button>
+                        </td>
                     </tr>
                     @endforeach
 

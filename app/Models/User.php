@@ -29,6 +29,7 @@ class User extends Model implements AuthenticatableContract,
      * The attributes that are mass assignable.
      *
      * @var array
+     * 哪些值支持批量复制, create批量赋值必须制定 fillable 或 guarded
      */
     protected $fillable = ['username', 'email', 'password',"register_time","last_login_time"];
 
