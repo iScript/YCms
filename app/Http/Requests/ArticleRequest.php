@@ -32,4 +32,7 @@ class ArticleRequest extends Request
             'content'       => 'required',
         ];
     }
+
+
+    
 }

@@ -10,7 +10,7 @@
                 <img src="/assets/AdminLTE/img/user2-160x160.jpg" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-                <p>Alexander Pierce</p>
+                <p>{{Auth::user()->username}}</p>
                 <!-- Status -->
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
@@ -36,7 +36,13 @@
 
                 <ul class="treeview-menu">
                     <li><a href="/admin/article" >文章列表</a></li>
+                </ul>
+            </li>
+            <li><a href="#"><i class="fa fa-link"></i> <span>产品管理</span></a>
 
+                <ul class="treeview-menu">
+                    <li><a href="/admin/category" >分类</a></li>
+                    <li><a href="/admin/product" >产品列表</a></li>
                 </ul>
             </li>
             <li><a href="#"><i class="fa fa-link"></i> <span>会员管理</span></a>

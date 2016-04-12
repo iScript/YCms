@@ -14,4 +14,17 @@ class Article extends Model
 
     protected $fillable = ['title', 'description', 'content',"published_at","uid"];
 
+
+    public function getStatusStringAttribute()
+    {
+        if($this->status == 0){
+            return "未审核通过";
+
+        }else{
+            return "审核通过";
+
+        }
+
+        //return $this->email."--".$this->id."--".rand(1,100);
+    }
 }

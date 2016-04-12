@@ -2,10 +2,10 @@
 
 @section('page-header')
     <h1>
-        文章列表
+        列表
         <small>...</small>
 
-        <a type="button" class="pull-right btn btn-success btn-sm" href="/admin/article/create"><i class="fa fa-times-circle"></i> 新增</a>
+        <a type="button" class="pull-right btn btn-success btn-sm" href="{{URL::current()}}/create"><i class="fa fa-times-circle"></i> 新增</a>
 
     </h1>
 @endsection
@@ -14,7 +14,7 @@
 
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title ">文章列表</h3>
+                <h3 class="box-title ">分类列表</h3>
 
                 <div class="box-tools">
 
@@ -32,21 +32,21 @@
                 <table class="table table-hover">
                     <tbody><tr>
                         <th>ID</th>
-                        <th>标题</th>
-                        <th>发布时间</th>
-                        <th>状态</th>
+                        <th>名称</th>
+                        <th>时间</th>
+
                         <th>操作</th>
                     </tr>
 
                     @foreach ($list as $obj)
                     <tr>
                         <td>{!! $obj->id !!}</td>
-                        <td>{!! $obj->title !!}</td>
-                        <td>{!! $obj->published_at !!}</td>
-                        <td><span class="label label-warning">{!! $obj->status_string !!}</span></td>
+                        <td>{!! $obj->name !!}</td>
+                        <td>{!! $obj->created_at !!}</td>
+
                         <td>
-                            <a href="/admin/article/{{$obj->id}}/edit" class="btn btn-success btn-sm ">编辑</a>
-                            <button type="button" class="btn btn-danger btn-sm y-click" y-url="/admin/article/{{$obj->id}}" y-method="delete">删除</button>
+                            {{--<a href="/admin/article/{{$obj->id}}/edit" class="btn btn-success btn-sm ">编辑</a>--}}
+                            <button type="button" class="btn btn-danger btn-sm y-click" y-url="/admin/category/{{$obj->id}}" y-method="delete">删除</button>
                         </td>
                     </tr>
                     @endforeach
