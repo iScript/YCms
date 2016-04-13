@@ -41,7 +41,7 @@
             <li><a href="#"><i class="fa fa-link"></i> <span>产品管理</span></a>
 
                 <ul class="treeview-menu">
-                    <li><a href="/admin/category" >分类</a></li>
+                    <li><a href="/admin/product_category" >产品分类</a></li>
                     <li><a href="/admin/product" >产品列表</a></li>
                 </ul>
             </li>

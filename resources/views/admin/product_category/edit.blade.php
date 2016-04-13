@@ -2,7 +2,7 @@
 
 @section('page-header')
     <h1>
-        添加
+        修改
         <small>...</small>
     </h1>
 @endsection
@@ -23,15 +23,16 @@
 
 
         <div class="box-header with-border">
-            <h3 class="box-title">添加</h3>
+            <h3 class="box-title">表单</h3>
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form role="form" action="/admin/category" method="post">
+        <form role="form" action="/admin/product_category/{{$category->id}}" method="post">
+            <input type="hidden" name="_method" value="PUT">
             <div class="box-body">
                 <div class="form-group">
                     <label for="">名称</label>
-                    <input type="text" class="form-control" name="name" id="" placeholder="">
+                    <input type="text" class="form-control" name="name" id="" placeholder="" value="{{$category->name}}">
                 </div>
 
             </div>

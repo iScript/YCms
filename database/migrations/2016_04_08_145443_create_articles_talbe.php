@@ -18,7 +18,7 @@ class CreateArticlesTalbe extends Migration
             $table->string("description")->nullable();
             $table->text("content");
             $table->timestamp("published_at");
-            $table->integer("uid");
+            $table->integer("uid")->unsigned();
             $table->string("cover")->nullable();
             $table->tinyInteger("status")->default(0);
             $table->integer("view_count")->default(0);

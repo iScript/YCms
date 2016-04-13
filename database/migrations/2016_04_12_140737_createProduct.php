@@ -16,8 +16,9 @@ class CreateProduct extends Migration
             $table->increments('id');
             $table->string("title",100);
             $table->string("description")->nullable();
-            $table->integer("cat_id");
-            $table->integer("uid");
+            $table->text("content")->nullable();
+            $table->integer("cat_id")->unsigned();
+            $table->integer("uid")->unsigned();
             $table->string("picture")->nullable();
             $table->float("price");
             $table->tinyInteger("status")->default(0);

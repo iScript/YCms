@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\Product_category as Category;
 
-class CategoryController extends Controller
+class Product_categoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +18,7 @@ class CategoryController extends Controller
     public function index()
     {
         $list = Category::paginate(10);
-        return view('admin.category.index')->with("list",$list);
+        return view('admin.product_category.index')->with("list",$list);
     }
 
     /**
@@ -29,7 +29,8 @@ class CategoryController extends Controller
     public function create()
     {
         //
-        return view('admin.category.create');
+
+        return view('admin.product_category.create');
     }
 
     /**
@@ -45,7 +46,7 @@ class CategoryController extends Controller
         $category = new Category;
         $category->name = $name;
         $category->save();
-        return redirect("admin/category");
+        return redirect("admin/product_category");
 
     }
 
@@ -69,6 +70,8 @@ class CategoryController extends Controller
     public function edit($id)
     {
         //
+        $category = Category::find($id);
+        return view('admin.product_category.edit')->with("category",$category);
     }
 
     /**
@@ -81,6 +84,10 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $category = Category::find($id);
+        $category->name = $request->input("name");
+        $category->save();
+        return redirect("admin/product_category");
     }
 
     /**
