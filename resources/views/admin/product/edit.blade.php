@@ -27,23 +27,24 @@
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form role="form" action="/admin/product" method="post">
+        <form role="form" action="/admin/product/{{$product->id}}" method="post">
+            <input type="hidden" name="_method" value="PUT">
             <div class="box-body">
                 <div class="form-group">
                     <label for="">名称</label>
-                    <input type="title" class="form-control" name="title" id="" placeholder="">
+                    <input type="title" class="form-control" name="title" id="" placeholder="" value="{{$product->title}}">
                 </div>
                 <div class="form-group">
                     <label for="">概述</label>
-                    <input type="text" class="form-control" id="" name="description" placeholder="">
+                    <input type="text" class="form-control" id="" name="description" placeholder="" value="{{$product->description}}">
                 </div>
 
 
                 <div class="form-group">
                     <label for="">分类</label>
                     <select name="cat_id" class="form-control">
-                        @foreach($category as $c)
-                        <option value="{{$c->id}}">{{$c->name}}</option>
+                        @foreach($categories as $c)
+                        <option value="{{$c->id}}" @if($c->id == $product->cat_id) selected="selected" @endif  >{{$c->name}}</option>
                         @endforeach
                     </select>
 
@@ -51,14 +52,14 @@
 
                 <div class="form-group">
                     <label for="">价格</label>
-                    <input type="text" class="form-control" id="" name="price" placeholder="">
+                    <input type="text" class="form-control" id="" name="price" placeholder="" value="{{$product->price}}">
                 </div>
 
                 <div class="form-group">
                     <label for="">图片</label>
                     <button class="btn btn-sm btn-info" id="up">上传图片</button>
-                    <input type="hidden" class="form-control" id="picture_input" name="picture" placeholder="">
-                    <img src="" id="up_img">
+                    <input type="hidden" class="form-control" id="picture_input" name="picture" placeholder="" value="{{$product->picture}}">
+                    <img src="{{config('qiniu.host')}}/{{$product->picture}}" id="up_img" width="80px" height="80px">
                 </div>
 
 
@@ -76,7 +77,7 @@
     <script type="text/javascript" src="/assets/plupload/plupload.full.min.js"></script>
     <script type="text/javascript">
         var token = "";
-        var host = "{{config('qiniu.host')}}";
+        var host = "";
         function uploadinit(){
             var uploader = new plupload.Uploader({
                 runtimes : 'html5',
@@ -137,7 +138,7 @@
                 console.log("token 获取失败~");return;
             }
             token = result.token;
-            //host = result.host;
+            host = result.host;
             uploadinit();
         });
 

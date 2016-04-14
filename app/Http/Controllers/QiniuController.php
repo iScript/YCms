@@ -15,18 +15,27 @@ use Qiniu\Storage\UploadManager;
 class QiniuController extends Controller
 {
     //
+    private $accessKey;
+    private $secretKey  ;
+    private $host;
+    private $bucket;
 
+
+    function __construct()
+    {
+        $this->accessKey =  config("qiniu.accessKey");
+        $this->secretKey = config("qiniu.secretKey");
+        $this->host = config("qiniu.host");
+        $this->bucket = config("qiniu.bucket");
+    }
 
     function simditor_upload(Request $request){
-        // 需要填写你的 Access Key 和 Secret Key
-        $accessKey = 'Bm9_rHcZ1hCBFmlToadl8x1oAjJpygo8EFO_xy9r';
-        $secretKey = 'wvS3q9Xbh7w7ALluWE0qJbK-5Sa4JbniSYQlTAUX';
 
         // 构建鉴权对象
-        $auth = new Auth($accessKey, $secretKey);
+        $auth = new Auth($this->accessKey, $this->secretKey);
 
         // 要上传的空间
-        $bucket = 'test';
+        $bucket = $this->bucket;
 
         // 生成上传 Token
         $token = $auth->uploadToken($bucket);
@@ -53,6 +62,26 @@ class QiniuController extends Controller
         }
 
 
+
+    }
+
+
+    function token(){
+        // 构建鉴权对象
+        $auth = new Auth($this->accessKey, $this->secretKey);
+
+        // 要上传的空间
+        $bucket = $this->bucket;
+
+        // 生成上传 Token
+        $token = $auth->uploadToken($bucket);
+
+        if($token){
+
+            return response()->json(['token' => $token, 'code' => 200,"message"=>"成功","host"=>$this->host]);
+        }
+
+        return response()->json(['token' => "" , 'code' => 400,"message"=>"失败"]);
 
     }
 }

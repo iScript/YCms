@@ -55,5 +55,5 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin','middleware' => 'auth'
 
 
 Route::post("upload","QiniuController@simditor_upload");
-
+Route::get("qiniu/token","QiniuController@token");
 

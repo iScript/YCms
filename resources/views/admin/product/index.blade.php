@@ -33,6 +33,7 @@
                     <tbody><tr>
                         <th>ID</th>
                         <th>标题</th>
+                        <th>分类</th>
                         <th>封面</th>
                         <th>状态</th>
                         <th>操作</th>
@@ -42,11 +43,12 @@
                     <tr>
                         <td>{!! $obj->id !!}</td>
                         <td>{!! $obj->title !!}</td>
-                        <td>{!! $obj->picture !!}</td>
-                        <td><span class="label label-warning">{!! $obj->status_string !!}</span></td>
+                        <td>{!! $obj->category->name !!}</td>
+                        <td><img src="{{config('qiniu.host')}}/{!! $obj->picture !!}" width="40px" height="40px"/></td>
+                        <td><span class="label label-warning">{!! $obj->status!!}</span></td>
                         <td>
-                            <a href="/admin/article/{{$obj->id}}/edit" class="btn btn-success btn-sm ">编辑</a>
-                            <button type="button" class="btn btn-danger btn-sm y-click" y-url="/admin/article/{{$obj->id}}" y-method="delete">删除</button>
+                            <a href="/admin/product/{{$obj->id}}/edit" class="btn btn-success btn-sm ">编辑</a>
+                            <button type="button" class="btn btn-danger btn-sm y-click" y-url="/admin/product/{{$obj->id}}" y-method="delete">删除</button>
                         </td>
                     </tr>
                     @endforeach

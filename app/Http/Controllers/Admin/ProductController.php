@@ -18,6 +18,7 @@ class ProductController extends Controller
     public function index()
     {
         $list = Product::paginate(10);
+
         return view('admin.product.index')->with("list",$list);
     }
 
@@ -43,6 +44,10 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //
+        $input = $request->all();
+        $input["uid"] = 1;
+        Product::create($request->all());
+        return redirect("admin/product");
     }
 
     /**
@@ -65,6 +70,10 @@ class ProductController extends Controller
     public function edit($id)
     {
         //
+        $product = Product::findOrFail($id);
+        //print_r($product->category->name);
+        $category = Category::all();
+        return view('admin.product.edit')->with("product",$product)->with("categories",$category);;
     }
 
     /**
@@ -76,7 +85,9 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product = Product::find($id);
+        $product->update($request->except("id"));
+        return redirect("admin/product");
     }
 
     /**
@@ -87,6 +98,10 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $result = Product::find($id)->delete();
+        if($result == true){
+            return response()->json(["code"=>200,"message"=>"删除成功","data"=>[]]);
+        }
+        return response()->json(["code"=>400,"message"=>"删除失败","data"=>[]]);
     }
 }

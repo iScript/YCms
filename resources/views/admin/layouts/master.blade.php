@@ -36,6 +36,7 @@
 
         <!-- jQuery 2.1.4 -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="/assets/layer/layer.js"></script>
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
