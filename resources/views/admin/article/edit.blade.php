@@ -44,7 +44,10 @@
                    <textarea id="editor" name="content">{{$article->content}}</textarea>
                 </div>
 
-
+                <div class="form-group">
+                    <label for="">标签</label>
+                    <input type="text" class="form-control" id="" name="tags" placeholder="" value="{{$article->tags_string}}">
+                </div>
 
             </div>
             <!-- /.box-body -->

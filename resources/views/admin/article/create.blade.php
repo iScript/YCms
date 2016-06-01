@@ -43,6 +43,10 @@
                    <textarea id="editor" name="content"></textarea>
                 </div>
 
+                <div class="form-group">
+                    <label for="">标签</label>
+                    <input type="text" class="form-control" id="" name="tags" placeholder="">
+                </div>
 
 
             </div>

@@ -7,7 +7,7 @@ use App\Http\Requests\ArticleRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
-
+use App\Models\Tag;
 
 
 class ArticleController extends Controller
@@ -19,7 +19,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $list = Article::paginate(10);
+        $list = Article::orderBy('id', 'DESC')->paginate(10);
         return view('admin.article.index')->with("list",$list);
     }
 
@@ -46,7 +46,16 @@ class ArticleController extends Controller
         $input = $request->all();
         $input["published_at"] = date("Y-m-d H:i:s",time());
         $input["uid"] = 1;
-        Article::create($request->all());
+        $article = Article::create($request->all());
+
+        $tags = [];
+        foreach( explode(" ",$input["tags"]) as $key => $value ){
+            $tag = Tag::firstOrCreate(['name' => $value]);
+            $tags[] = $tag->id;
+        }
+        $article->tags()->attach($tags);
+
+
         return redirect("admin/article");
 
     }
@@ -86,9 +95,18 @@ class ArticleController extends Controller
     public function update(Request $request, $id)
     {
 
-        //
+        $input = $request->all();
+
         $article = Article::find($id);
         $article->update($request->except("id"));
+
+        $tags = [];
+        foreach( explode(" ",$input["tags"]) as $key => $value ){
+            $tag = Tag::firstOrCreate(['name' => $value]);
+            $tags[] = $tag->id;
+        }
+        $article->tags()->sync($tags);
+
         return redirect("admin/article");
 
 
