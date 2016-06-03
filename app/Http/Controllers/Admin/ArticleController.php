@@ -19,6 +19,11 @@ class ArticleController extends Controller
      */
     public function index()
     {
+
+//        $a = Article::find(28);
+//        var_dump($a->tags()->get());
+//        $a->tags()->sync([3]);
+//        exit;
         $list = Article::orderBy('id', 'DESC')->paginate(10);
         return view('admin.article.index')->with("list",$list);
     }
