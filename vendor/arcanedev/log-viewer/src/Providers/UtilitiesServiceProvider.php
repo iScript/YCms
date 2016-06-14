@@ -1,6 +1,7 @@
 <?php namespace Arcanedev\LogViewer\Providers;
 
 use Arcanedev\LogViewer\Utilities\Filesystem;
+use Arcanedev\LogViewer\Utilities\LogLevels;
 use Arcanedev\Support\ServiceProvider;
 
 /**
@@ -60,10 +61,16 @@ class UtilitiesServiceProvider extends ServiceProvider
      */
     private function registerLogLevels()
     {
-        $this->singleton(
-            'arcanedev.log-viewer.levels',
-            'Arcanedev\LogViewer\Utilities\LogLevels'
-        );
+        $this->singleton('arcanedev.log-viewer.levels', function ($app) {
+            /**
+             * @var  \Illuminate\Config\Repository       $config
+             * @var  \Illuminate\Translation\Translator  $translator
+             */
+            $config     = $app['config'];
+            $translator = $app['translator'];
+
+            return new LogLevels($translator, $config->get('log-viewer.locale'));
+        });
 
         $this->bind(
             'Arcanedev\\LogViewer\\Contracts\\LogLevelsInterface',
@@ -110,13 +117,20 @@ class UtilitiesServiceProvider extends ServiceProvider
     {
         $this->singleton('arcanedev.log-viewer.filesystem', function ($app) {
             /**
-             * @var  \Illuminate\Filesystem\Filesystem  $files
              * @var  \Illuminate\Config\Repository      $config
+             * @var  \Illuminate\Filesystem\Filesystem  $files
              */
-            $files  = $app['files'];
-            $config = $app['config'];
+            $config     = $app['config'];
+            $files      = $app['files'];
+            $filesystem = new Filesystem($files, $config->get('log-viewer.storage-path'));
 
-            return new Filesystem($files, $config->get('log-viewer.storage-path'));
+            $filesystem->setPattern(
+                $config->get('log-viewer.pattern.prefix',    Filesystem::PATTERN_PREFIX),
+                $config->get('log-viewer.pattern.date',      Filesystem::PATTERN_DATE),
+                $config->get('log-viewer.pattern.extension', Filesystem::PATTERN_EXTENSION)
+            );
+
+            return $filesystem;
         });
 
         $this->bind(

@@ -15,6 +15,7 @@ class CreateArticleCategory extends Migration
         Schema::create('iz_article_category', function (Blueprint $table) {
             $table->increments('id');
             $table->string("name");
+            $table->integer("pid");
             $table->timestamps();
         });
     }

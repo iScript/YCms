@@ -35,6 +35,25 @@
                 </div>
 
             </div>
+
+            <div class="box-body">
+                <div class="form-group">
+                    <label for="">父id</label>
+                   <select name="pid" class="form-control">
+                       <option value="0" >顶级分类</option>
+                       @foreach ($category as $c)
+
+                       <option value="{{$c->id}}">{{$c->name}}</option>
+
+                           @foreach ($c->children as $cc)
+                               {{--<option value="{{$cc->id}}"> ------ {{$cc->name}}</option>--}}
+                           @endforeach
+                       @endforeach
+                   </select>
+                </div>
+
+            </div>
+
             <!-- /.box-body -->
 
             <div class="box-footer">

@@ -20,7 +20,7 @@ class LogViewer implements LogViewerInterface
     /**
      * LogViewer Version
      */
-    const VERSION = '3.8.1';
+    const VERSION = '3.9.0';
 
     /* ------------------------------------------------------------------------------------------------
      |  Properties
@@ -106,6 +106,35 @@ class LogViewer implements LogViewerInterface
     public function setPath($path)
     {
         $this->factory->setPath($path);
+
+        return $this;
+    }
+
+    /**
+     * Get the log pattern.
+     *
+     * @return string
+     */
+    public function getPattern()
+    {
+        return $this->factory->getPattern();
+    }
+
+    /**
+     * Set the log pattern.
+     *
+     * @param  string  $date
+     * @param  string  $prefix
+     * @param  string  $extension
+     *
+     * @return self
+     */
+    public function setPattern(
+        $prefix    = FilesystemInterface::PATTERN_PREFIX,
+        $date      = FilesystemInterface::PATTERN_DATE,
+        $extension = FilesystemInterface::PATTERN_EXTENSION
+    ) {
+        $this->factory->setPattern($prefix, $date, $extension);
 
         return $this;
     }

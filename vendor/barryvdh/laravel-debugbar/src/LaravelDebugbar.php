@@ -71,6 +71,13 @@ class LaravelDebugbar extends DebugBar
     protected $booted = false;
 
     /**
+     * True when enabled, false disabled an null for still unknown
+     *
+     * @var bool
+     */
+    protected $enabled = null;
+
+    /**
      * True when this is a Lumen application
      *
      * @var bool
@@ -95,7 +102,8 @@ class LaravelDebugbar extends DebugBar
      */
     public function enable()
     {
-        $this->app['config']->set('debugbar.enabled', true);
+        $this->enabled = true;
+
         if (!$this->booted) {
             $this->boot();
         }
@@ -127,12 +135,12 @@ class LaravelDebugbar extends DebugBar
         }
 
         if ($this->shouldCollect('time', true)) {
-            $startTime = defined('LARAVEL_START') ? LARAVEL_START : null;
-            $this->addCollector(new TimeDataCollector($startTime));
+            $this->addCollector(new TimeDataCollector());
 
             if ( ! $this->isLumen()) {
                 $this->app->booted(
-                    function () use ($debugbar, $startTime) {
+                    function () use ($debugbar) {
+                        $startTime = $this->app['request']->server('REQUEST_TIME_FLOAT');
                         if ($startTime) {
                             $debugbar['time']->addMeasure('Booting', $startTime, microtime(true));
                         }
@@ -168,7 +176,7 @@ class LaravelDebugbar extends DebugBar
 
         if ($this->shouldCollect('events', false) && isset($this->app['events'])) {
             try {
-                $startTime = defined('LARAVEL_START') ? LARAVEL_START : null;
+                $startTime = $this->app['request']->server('REQUEST_TIME_FLOAT');
                 $eventCollector = new EventCollector($startTime);
                 $this->addCollector($eventCollector);
                 $this->app['events']->subscribe($eventCollector);
@@ -498,7 +506,7 @@ class LaravelDebugbar extends DebugBar
             $httpDriver = new SymfonyHttpDriver($sessionManager, $response);
             $this->setHttpDriver($httpDriver);
 
-            if ($this->shouldCollect('session')) {
+            if ($this->shouldCollect('session') && ! $this->hasCollector('session')) {
                 try {
                     $this->addCollector(new SessionCollector($sessionManager));
                 } catch (\Exception $e) {
@@ -529,7 +537,7 @@ class LaravelDebugbar extends DebugBar
             }
         }
 
-        if ($app['config']->get('debugbar.clockwork')) {
+        if ($app['config']->get('debugbar.clockwork') && ! $this->hasCollector('clockwork')) {
 
             try {
                 $this->addCollector(new ClockworkCollector($request, $response, $sessionManager));
@@ -580,10 +588,6 @@ class LaravelDebugbar extends DebugBar
             }
         }
 
-
-        // Stop further rendering (on subrequests etc)
-        $this->disable();
-
         return $response;
     }
 
@@ -593,7 +597,11 @@ class LaravelDebugbar extends DebugBar
      */
     public function isEnabled()
     {
-        return value($this->app['config']->get('debugbar.enabled'));
+        if ($this->enabled === null) {
+            $this->enabled = value($this->app['config']->get('debugbar.enabled'));
+        }
+
+        return $this->enabled;
     }
 
     /**
@@ -697,7 +705,7 @@ class LaravelDebugbar extends DebugBar
      */
     public function disable()
     {
-        $this->app['config']->set('debugbar.enabled', false);
+        $this->enabled = false;
     }
 
     /**

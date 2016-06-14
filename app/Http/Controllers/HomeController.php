@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use \Response;
 
+use Redis;
 
 class HomeController extends Controller
 {
@@ -18,7 +19,29 @@ class HomeController extends Controller
      */
     public function index()
     {
-        //echo 33;exit;
+
+        // set/get 操作
+//        Redis::set("set","test");
+//        echo Redis::get("set");
+//
+//        //setex set一个存储时效
+//         Redis::setex ( 'str' ,  10 ,  'bar' ) ;  //表示存储有效期为10秒
+//
+//        // set if no exist
+//        Redis::setnx("foo",12);
+//        Redis::setnx("foo",13);
+//
+//        //先get后set
+//        echo Redis::getset("foo",17);
+//
+//        //
+//        $isExist = Redis::exists("foo");
+//        var_dump($isExist);
+//
+//
+//        Redis::rpush("aList","test111");
+//
+//        exit;
         return view('home.index');
     }
 

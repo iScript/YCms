@@ -49,6 +49,21 @@
                             <button type="button" class="btn btn-danger btn-sm y-click" y-url="/admin/product_category/{{$obj->id}}" y-method="delete">删除</button>
                         </td>
                     </tr>
+
+                        @foreach ($obj->children as $c)
+                            <tr>
+                                <td>{!! $c->id !!}</td>
+                                <td> ------- {!! $c->name !!}</td>
+                                <td>{!! $c->created_at !!}</td>
+
+                                <td>
+                                    <a href="/admin/product_category/{{$c->id}}/edit" class="btn btn-success btn-sm ">编辑</a>
+                                    <button type="button" class="btn btn-danger btn-sm y-click" y-url="/admin/product_category/{{$c->id}}" y-method="delete">删除</button>
+                                </td>
+                            </tr>
+                        @endforeach
+
+
                     @endforeach
 
                     </tbody>

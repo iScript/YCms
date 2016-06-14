@@ -17,7 +17,9 @@ class Product_categoryController extends Controller
      */
     public function index()
     {
-        $list = Category::paginate(10);
+        $list = Category::where("pid","0")->paginate(10);
+
+
         return view('admin.product_category.index')->with("list",$list);
     }
 
@@ -29,8 +31,8 @@ class Product_categoryController extends Controller
     public function create()
     {
         //
-
-        return view('admin.product_category.create');
+        $category = Category::where("pid","0")->get();
+        return view('admin.product_category.create')->with("category",$category);
     }
 
     /**
@@ -45,6 +47,7 @@ class Product_categoryController extends Controller
         $name = $request->input("name");
         $category = new Category;
         $category->name = $name;
+        $category->pid = $request->input("pid");
         $category->save();
         return redirect("admin/product_category");
 

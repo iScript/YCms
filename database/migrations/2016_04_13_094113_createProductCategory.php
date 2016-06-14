@@ -15,6 +15,7 @@ class CreateProductCategory extends Migration
         Schema::create('iz_product_category', function (Blueprint $table) {
             $table->increments('id');
             $table->string("name");
+            $table->integer("pid");
             $table->timestamps();
         });
     }
