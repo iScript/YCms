@@ -27,12 +27,12 @@
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form role="form" action="/admin/product_category/{{$category->id}}" method="post">
+        <form role="form" action="/admin/product_category/{{$obj->id}}" method="post">
             <input type="hidden" name="_method" value="PUT">
             <div class="box-body">
                 <div class="form-group">
                     <label for="">名称</label>
-                    <input type="text" class="form-control" name="name" id="" placeholder="" value="{{$category->name}}">
+                    <input type="text" class="form-control" name="name" id="" placeholder="" value="{{$obj->name}}">
                 </div>
 
             </div>
@@ -44,7 +44,7 @@
                         <option value="0" >顶级分类</option>
                         @foreach ($category as $c)
 
-                            <option value="{{$c->id}}">{{$c->name}}</option>
+                            <option value="{{$c->id}}" @if($c->id == $obj->pid) selected="selected" @endif >{{$c->name}}</option>
 
                             @foreach ($c->children as $cc)
                                 {{--<option value="{{$cc->id}}"> ------ {{$cc->name}}</option>--}}

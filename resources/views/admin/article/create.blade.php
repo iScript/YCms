@@ -68,6 +68,8 @@
     <script>
         var editor = new Simditor({
             textarea: $('#editor'),
+            placeholder : "请输入",
+            toolbar  : ['title','bold','italic','underline','strikethrough','fontScale','color','ol' ,'ul','blockquote','code','table','link','image','hr','alignment',"mark","insert"],
             upload:{
                 url: '/upload',
                 params: null,

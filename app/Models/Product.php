@@ -12,6 +12,13 @@ class Product extends Model
     protected $fillable = ["title","description","content","cat_id","uid","picture","price","status"];
 
 
+//    protected $appends = ['c'];
+//
+//    public function getCAttribute(){
+//
+//        $this->category();
+//    }
+
     public function category(){
         return $this->belongsTo('App\Models\Product_category',"cat_id");
     }

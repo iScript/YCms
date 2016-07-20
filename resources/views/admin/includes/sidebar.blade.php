@@ -35,6 +35,7 @@
             <li><a href="#"><i class="fa fa-link"></i> <span>内容管理</span></a>
 
                 <ul class="treeview-menu">
+                    <li><a href="/admin/article_category" >节点管理</a></li>
                     <li><a href="/admin/article" >文章列表</a></li>
                 </ul>
             </li>

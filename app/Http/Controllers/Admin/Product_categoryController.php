@@ -73,8 +73,9 @@ class Product_categoryController extends Controller
     public function edit($id)
     {
         //
-        $category = Category::find($id);
-        return view('admin.product_category.edit')->with("category",$category);
+        $category = Category::where("pid","0")->get();;
+        $obj = Category::find($id);
+        return view('admin.product_category.edit',["category"=>$category,"obj"=>$obj]);
     }
 
     /**

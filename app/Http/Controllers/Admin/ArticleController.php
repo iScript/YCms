@@ -24,7 +24,10 @@ class ArticleController extends Controller
 //        var_dump($a->tags()->get());
 //        $a->tags()->sync([3]);
 //        exit;
-        $list = Article::orderBy('id', 'DESC')->paginate(10);
+        $list = Article::orderBy('id', 'DESC')->paginate(2);
+
+
+        //$list->appends(['sort' => 'votes']);
         return view('admin.article.index')->with("list",$list);
     }
 
@@ -32,6 +35,7 @@ class ArticleController extends Controller
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
+     * -ykq
      */
     public function create()
     {

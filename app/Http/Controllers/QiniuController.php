@@ -51,13 +51,12 @@ class QiniuController extends Controller
 
         // 调用 UploadManager 的 putFile 方法进行文件的上传
         list($ret, $err) = $uploadMgr->putFile($token, $key, $filePath);
-        //echo "\n====> putFile result: \n";
         if ($err !== null) {
             return response()->json(["success"=>false,"mes"=>"哎呦~上传失败","file_path"=>""]);
             //var_dump($err);
         } else {
             //var_dump($ret);   array(hash key)
-            return response()->json(["success"=>true,"mes"=>"上传成功","file_path"=>"http://7xlysa.com1.z0.glb.clouddn.com/".$ret["key"]]);
+            return response()->json(["success"=>true,"mes"=>"上传成功","file_path"=>$this->host."/".$ret["key"]]);
 
         }
 

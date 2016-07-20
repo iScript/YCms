@@ -19,6 +19,13 @@ class ProductController extends Controller
     {
         $list = Product::paginate(10);
 
+        foreach($list as $k => $v){
+           // $v->c = $v->category;
+
+        }
+
+        return response()->json($list);
+        //exit;
         return view('admin.product.index')->with("list",$list);
     }
 
