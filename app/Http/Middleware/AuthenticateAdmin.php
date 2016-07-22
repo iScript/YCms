@@ -7,8 +7,12 @@ use Route,URL,Auth;
 
 class AuthenticateAdmin
 {
+
+
+
+
     /**
-     * Handle an incoming request.
+     * 后台中间件,用于权限控制
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -18,28 +22,29 @@ class AuthenticateAdmin
     {
         // 检查是否登录
         if(!Auth::check()){
-            return redirect('/login');
+            return redirect('/auth/login');
         }
+
+        $name   = Route::currentRouteName();    // 获取当前路由  admin.user.edit
+
+        //echo $name;
 
         // 是否超级管理员
         if(Auth::user()->is_super){
             return $next($request);
         }
 
-        //$action = Route::currentRouteAction();
-        $name   = Route::currentRouteName();    // 获取当前路由  admin.user.edit
+        // 如果权限验证不通过
+        if(!Auth::user()->allow($name) ){
+            if($request->ajax() ) {
+                return response()->json(["code"=>403,"message"=>"没有权限"]);
 
-//        // 如果权限验证不通过
-//        if(!Auth::user()->allow($name) ){
-//            if($request->ajax() ) {
-//                return response()->json(["code"=>403,"message"=>"没有权限"]);
-//
-//            }else{
-//                return response()->view('admin.errors.403', compact('previousUrl'));
-//
-//            }
-//
-//        }
+            }else{
+                return response()->view('admin.errors.403');
+
+            }
+
+        }
 
         return $next($request);
     }

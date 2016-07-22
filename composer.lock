@@ -4,131 +4,9 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "89969235621e37bd1a45fe35fceed35d",
-    "content-hash": "ebd2166c502cb4a091f7d82362ffc67f",
+    "hash": "9f98f179f221be346ce40c00b0788126",
+    "content-hash": "2beb6d732df10223fdc49271984a7cc4",
     "packages": [
-        {
-            "name": "arcanedev/log-viewer",
-            "version": "3.10.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ARCANEDEV/LogViewer.git",
-                "reference": "e00027530991254d0fbf60018709bd973a077124"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://packagist.phpcomposer.com/files/ARCANEDEV/LogViewer/e00027530991254d0fbf60018709bd973a077124.zip",
-                "reference": "e00027530991254d0fbf60018709bd973a077124",
-                "shasum": ""
-            },
-            "require": {
-                "arcanedev/support": "~3.0",
-                "php": ">=5.5.9",
-                "psr/log": "~1.0"
-            },
-            "require-dev": {
-                "phpunit/phpcov": "~2.0|~3.0",
-                "phpunit/phpunit": "~4.0|~5.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.10.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Arcanedev\\LogViewer\\": "src/"
-                },
-                "files": [
-                    "constants.php",
-                    "helpers.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ARCANEDEV",
-                    "email": "arcanedev.maroc@gmail.com",
-                    "homepage": "https://github.com/arcanedev-maroc",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Provides a Log Viewer for Laravel 5",
-            "homepage": "https://github.com/ARCANEDEV/LogViewer",
-            "keywords": [
-                "arcanedev",
-                "arcanesoft",
-                "laravel",
-                "log",
-                "log viewer",
-                "log-viewer",
-                "logviewer"
-            ],
-            "time": "2016-07-12 20:48:37"
-        },
-        {
-            "name": "arcanedev/support",
-            "version": "3.8.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ARCANEDEV/Support.git",
-                "reference": "bbe6d6b7dc9171c00103e2f4aa0357ce1ac94d1e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://packagist.phpcomposer.com/files/ARCANEDEV/Support/bbe6d6b7dc9171c00103e2f4aa0357ce1ac94d1e.zip",
-                "reference": "bbe6d6b7dc9171c00103e2f4aa0357ce1ac94d1e",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/filesystem": "~5.0",
-                "illuminate/support": "~5.0",
-                "php": ">=5.5.9"
-            },
-            "require-dev": {
-                "phpunit/phpcov": "~2.0|~3.0",
-                "phpunit/phpunit": "~4.0|~5.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Arcanedev\\Support\\": "src/"
-                },
-                "files": [
-                    "constants.php",
-                    "helpers.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ARCANEDEV",
-                    "email": "arcanedev.maroc@gmail.com",
-                    "homepage": "https://github.com/arcanedev-maroc"
-                }
-            ],
-            "description": "ARCANEDEV Support Helpers",
-            "homepage": "https://github.com/ARCANEDEV/Support",
-            "keywords": [
-                "arcanedev",
-                "arcanesoft",
-                "laravel",
-                "support"
-            ],
-            "time": "2016-04-17 18:12:30"
-        },
         {
             "name": "classpreloader/classpreloader",
             "version": "3.0.0",
@@ -430,16 +308,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.2.40",
+            "version": "5.2.41",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "6195211140ed0881e89d79a296f893abc56987be"
+                "reference": "29ba2e310cfeb42ab6545bcd81ff4c2ec1f6b5c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://packagist.phpcomposer.com/files/laravel/framework/6195211140ed0881e89d79a296f893abc56987be.zip",
-                "reference": "6195211140ed0881e89d79a296f893abc56987be",
+                "url": "https://packagist.phpcomposer.com/files/laravel/framework/29ba2e310cfeb42ab6545bcd81ff4c2ec1f6b5c2.zip",
+                "reference": "29ba2e310cfeb42ab6545bcd81ff4c2ec1f6b5c2",
                 "shasum": ""
             },
             "require": {
@@ -556,7 +434,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2016-07-19 19:46:25"
+            "time": "2016-07-20 13:13:06"
         },
         {
             "name": "lcobucci/jwt",
@@ -3025,16 +2903,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.26",
+            "version": "4.8.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "fc1d8cd5b5de11625979125c5639347896ac2c74"
+                "reference": "c062dddcb68e44b563f66ee319ddae2b5a322a90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://packagist.phpcomposer.com/files/sebastianbergmann/phpunit/fc1d8cd5b5de11625979125c5639347896ac2c74.zip",
-                "reference": "fc1d8cd5b5de11625979125c5639347896ac2c74",
+                "url": "https://packagist.phpcomposer.com/files/sebastianbergmann/phpunit/c062dddcb68e44b563f66ee319ddae2b5a322a90.zip",
+                "reference": "c062dddcb68e44b563f66ee319ddae2b5a322a90",
                 "shasum": ""
             },
             "require": {
@@ -3093,7 +2971,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-05-17 03:09:28"
+            "time": "2016-07-21 06:48:14"
         },
         {
             "name": "phpunit/phpunit-mock-objects",

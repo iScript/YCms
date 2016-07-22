@@ -103,12 +103,33 @@ class RoleController extends Controller
 
 
         $role = Role::find($id);
+
+
+
         //$permissions = $this->permission->topPermissions();
-        //$rolePermissions = $role->rolePermissions($id);
+
+        $rolePermissions = $role->perms()->get(); //当前角色拥有的权限
+        $rolePerms = [];
+        foreach ($rolePermissions as $item) {
+            $rolePerms[] = $item->name;
+        }
+
+        //print_r($rolePermissions);
+
         $permissions = Permission::all();
+        $p = array();
+        foreach($permissions as $k => $v){
+            $pa = explode(".",$v->name);
+            if(count($pa) == 3  ){
+                $p[$pa[1]][] = $v;
+            }
+
+        }
+        //print_r($p);
+
 
         //var_dump($rolePermissions);exit;
-        return view('admin.role.permissions', compact('role', 'permissions'));
+        return view('admin.role.permissions', compact('role', 'rolePerms',"p"));
     }
 
     public function storePermissions($id,Request $request)

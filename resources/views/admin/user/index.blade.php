@@ -47,7 +47,7 @@
                         <td>@if(isset($user->roles[0])) <button type="button" class="btn  btn-info btn-xs">{{$user->roles[0]->display_name}} </button> @endif</td>
                         <td><span class="label label-warning">{!! $user->status !!}</span></td>
                         <td>
-
+                            <a type="button" href="/admin/user/{{$user->id}}/edit" class="btn btn-info btn-xs"><i class="fa fa-edit "></i> 修改</a>
                             <button type="button" class="btn btn-danger btn-xs y-click" y-url="/admin/user/{{$user->id}}" y-method="delete"><i class="fa fa-close"></i> 删除</button>
 
 

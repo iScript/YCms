@@ -53,7 +53,7 @@
                     @foreach ($obj->children as $c)
                         <tr>
                             <td>{!! $c->id !!}</td>
-                            <td> ------- {!! $c->name !!}</td>
+                            <td> |------- {!! $c->name !!}</td>
                             <td>{!! $c->created_at !!}</td>
 
                             <td>

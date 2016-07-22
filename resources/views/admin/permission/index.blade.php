@@ -60,11 +60,7 @@
             </div>
 
             <!-- /.box-body -->
-            <div class="box-footer">
-                <div class="pull-right">
-                    {!! $list->render() !!}
-                </div>
-            </div>
+
 
         </div>
         <!-- /.box -->

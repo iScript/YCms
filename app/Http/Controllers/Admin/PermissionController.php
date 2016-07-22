@@ -18,7 +18,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $list = Permission::paginate(10);
+        $list = Permission::all();
         return view(\Route::currentRouteName())->with("list",$list);
     }
 
@@ -63,7 +63,9 @@ class PermissionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $obj = Permission::findOrFail($id);
+
+        return view('admin.permission.edit')->with("obj",$obj);
     }
 
     /**
@@ -75,7 +77,9 @@ class PermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $obj = Permission::findOrFail($id);
+        $obj->update($request->except("id"));
+        return redirect("admin/permission");
     }
 
     /**
@@ -86,7 +90,8 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Permission::find($id)->delete();
+        return response()->json(["code"=>200,"message"=>"删除成功","data"=>[]]);
     }
 
 

@@ -19,6 +19,12 @@
     </div>
     @endif
 
+    <style>
+        .permission_list{list-style: none;}
+        .permission_list li {padding:5px;clear:both;}
+        //.permission_list label{width: 150px;display: inline-block}
+    </style>
+
     <div class="box box-primary">
 
 
@@ -30,16 +36,37 @@
 
         <div class="box-body">
             <form role="form" action="/admin/role/{{$role->id}}/permissions" method="post">
-            @foreach($permissions as $k=>$v)
-                <input type="checkbox" name="permissions[]" value="{{$v->id}}"> {{$v->display_name}}
+            <ul class="permission_list">
+            @foreach($p as $kk => $vv)
+            <li><div class="col-md-3"><input type="checkbox" class="qx"  /> <label> {{$kk}}: </label></div>
+                <div class="col-md-9">
+                @foreach($vv as $k=>$v)
+                    <input type="checkbox" name="permissions[]" value="{{$v->id}}"  @if(in_array($v->name,$rolePerms)) checked="true" @endif   > {{$v->display_name}}
+                @endforeach
+                </div>
+            </li>
+
             @endforeach
 
 
-                <input type="submit" name="send" value="submit">
+                <input class="btn btn-primary" type="submit" name="send" value="修改">
+            </ul>
+
+
+
+
             </form>
         </div>
 
+        <script>
+            $(".qx").change(function(){
+                var isChecked = $(this).prop("checked");
+                console.log(isChecked);
+                $(this).parent().siblings("div").find("input").prop("checked",isChecked);
+            });
 
+
+        </script>
 
     </div>
 

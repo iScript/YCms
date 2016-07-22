@@ -55,10 +55,10 @@ class User extends Model implements AuthenticatableContract,
 
 
     // 附加属性
-    protected $appends = ['is_admin'];
-    public function getIsAdminAttribute()
+    protected $appends = ['is_super'];
+    public function getIsSuperAttribute()
     {
-        return $this->email."--".$this->id."--".rand(1,100);
+        return ($this->id == 1);
     }
 
     public function roles()

@@ -2,7 +2,7 @@
 
 @section('page-header')
     <h1>
-        修改
+        修改用户
         <small>...</small>
     </h1>
 @endsection
@@ -23,25 +23,35 @@
 
 
         <div class="box-header with-border">
-            <h3 class="box-title">修改</h3>
+            <h3 class="box-title">用户修改</h3>
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form role="form" action="/admin/permission/{{$obj->id}}" method="post">
+        <form role="form" action="/admin/user/{{$obj->id}}" method="post">
             <input type="hidden" name="_method" value="PUT">
             <div class="box-body">
                 <div class="form-group">
-                    <label for="">标示</label>
-                    <input type="text" class="form-control" name="name" id="" placeholder="权限标示" value="{{$obj->name}}" >
+                    <label for="">用户名</label>
+                    <input type="username" class="form-control" disabled="true" id="" placeholder="Enter username" value="{{$obj->username}}">
                 </div>
                 <div class="form-group">
-                    <label for="">名称</label>
-                    <input type="text" class="form-control" id="" name="display_name" placeholder="名称" value="{{$obj->display_name}}" >
+                    <label for="">密码</label>
+                    <input type="password" class="form-control" id="" name="password" placeholder="Password" value="" >
                 </div>
 
                 <div class="form-group">
-                    <label for="">描述</label>
-                    <input type="text" class="form-control" id="" name="description" placeholder="描述" value="{{$obj->description}}" >
+                    <label for="">email</label>
+                    <input type="text" class="form-control" id="" name="email" placeholder="email" value="{{$obj->email}}" >
+                </div>
+
+                <div class="form-group">
+                    <label for="">角色 </label>
+                    <select name="role_id">
+                        <option value="0">无</option>
+                        @foreach($roles as $k=>$v)
+                        <option value="{{$v->id}}" @if($obj->hasRole($v->name)) selected="true" @endif >{{$v->display_name}}</option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <!--

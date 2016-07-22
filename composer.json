@@ -10,7 +10,7 @@
         "predis/predis" :  "*",
         "qiniu/php-sdk": "*",
         "zizaco/entrust": "*",
-        "arcanedev/log-viewer": "~3.0",
+
         "lcobucci/jwt": "^3.1"
 
 

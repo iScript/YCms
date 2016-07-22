@@ -31,9 +31,7 @@ class UserController extends Controller
     {
         $users = User::paginate(10);
 
-        //var_dump($users[1]->roles[0]->id);exit;
-
-
+        //var_dump($users[1]->roles[0]->id);exit
         return view('admin.user.index')->with("users",$users);
     }
 
@@ -51,11 +49,42 @@ class UserController extends Controller
     }
 
 
+
     public function store(RegisterRequest $request)
     {
         $this->createUser($request->all());
         return redirect("admin/user");
 
+    }
+
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+        $obj = User::findOrFail($id);
+
+        return view('admin.user.edit')->with("obj",$obj);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $this->updateUser($user,$request->except("id"));
+        return redirect("admin/user");
     }
 
 
@@ -96,7 +125,26 @@ class UserController extends Controller
 
         }
 
+        return $user;
+    }
 
+    protected function updateUser(User $user ,array $data)
+    {
+
+        if($data["password"] == ""){
+            unset($data["password"]);
+        }else{
+            $data["password"] = sha1($data['password']);
+
+        }
+
+        $user->update($data);
+
+
+        if(!empty($data["role_id"])){
+            $user->roles()->detach();
+            $user->attachRole($data["role_id"]);
+        }
         return $user;
     }
 
