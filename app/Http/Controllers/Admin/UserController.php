@@ -7,16 +7,22 @@ use App\Models\User;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
-
+use App\Repositories\UserRepository;
 
 class UserController extends Controller
 {
 
-    public function __construct()
+
+    protected $userRepository;
+
+    public function __construct(UserRepository $userRepository)
     {
         //parent::__construct();
 
+        $this->userRepository = $userRepository;
         view()->share('roles', Role::all());    // 共享视图
+
+
     }
 
 
@@ -29,9 +35,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(10);
 
-        //var_dump($users[1]->roles[0]->id);exit
+
+//        $user = $this->userRepository->getById(1);
+//        var_dump($user);
+
+        $users = User::paginate(10);
         return view('admin.user.index')->with("users",$users);
     }
 
