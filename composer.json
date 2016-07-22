@@ -11,11 +11,9 @@
         "qiniu/php-sdk": "*",
         "zizaco/entrust": "*",
         "arcanedev/log-viewer": "~3.0",
-        "lcobucci/jwt": "^3.1",
+        "lcobucci/jwt": "^3.1"
 
-        "infyomlabs/laravel-generator": "dev-master",
-        "laravelcollective/html": "5.2.*",
-        "infyomlabs/adminlte-templates": "dev-master"
+
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^2.2",

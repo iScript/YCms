@@ -11,16 +11,25 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-//use Zizaco\Entrust\Traits\EntrustUserTrait;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 
 class User extends Model implements AuthenticatableContract,
                                     AuthorizableContract,
                                     CanResetPasswordContract
 {
-    use Authenticatable, Authorizable, CanResetPassword;
+    use Authenticatable, Authorizable, CanResetPassword{
+
+        Authorizable::can insteadof EntrustUserTrait;
+    }
     use SoftDeletes;
-    //use EntrustUserTrait;
+
+    use EntrustUserTrait{
+        EntrustUserTrait::restore insteadof SoftDeletes;
+        EntrustUserTrait::can as allow;
+    }
+
+
     /**
      * The database table used by the model.
      *
@@ -50,6 +59,11 @@ class User extends Model implements AuthenticatableContract,
     public function getIsAdminAttribute()
     {
         return $this->email."--".$this->id."--".rand(1,100);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany('App\Models\Role','iz_role_user','user_id');
     }
 
 }

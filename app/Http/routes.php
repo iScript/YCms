@@ -41,12 +41,16 @@ Route::group(['middleware' => 'guest'], function () use ($router) {
  * Namespaces indicate folder structure
  * Admin middleware groups web, auth, and routeNeedsPermission
  */
-Route::group(['namespace' => 'Admin', 'prefix' => 'admin','middleware' => ['auth']], function () {
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin','middleware' => ['admin']], function () {
     
-    Route::get('dashboard', 'DashboardController@index')->name('admin.dashboard');
-    Route::get('/', 'DashboardController@index')->name('admin.dashboard');
+    //Route::get('dashboard', 'DashboardController@index')->name('admin.dashboard');
+    Route::get('/', 'DashboardController@index')->name('admin.home');
 
     Route::resource('user', 'UserController');
+    Route::resource('role', 'RoleController');
+    Route::get('role/{id}/permissions',['as'=>'admin.role.permissions','uses'=>'RoleController@permissions']);
+    Route::post('role/{id}/permissions',['as'=>'admin.role.permissions','uses'=>'RoleController@storePermissions']);
+    Route::resource('permission', 'PermissionController');
     Route::resource('article', 'ArticleController');
     Route::resource('article_category', 'Article_categoryController');
     Route::resource('product_category', 'Product_categoryController');
@@ -62,35 +66,3 @@ Route::get("/captchaform" ,['as' => 'captchaform', 'uses' => 'GeeController@inde
 Route::get("/captcha" ,['as' => 'captcha', 'uses' => 'GeeController@captcha']);
 Route::post("/captchacheck" ,['as' => 'captchacheck', 'uses' => 'GeeController@check']);
 
-/*
-|--------------------------------------------------------------------------
-| API routes
-|--------------------------------------------------------------------------
-*/
-
-Route::group(['prefix' => 'api', 'namespace' => 'API'], function () {
-    Route::group(['prefix' => 'v1'], function () {
-        require config('infyom.laravel_generator.path.api_routes');
-    });
-});
-
-
-Route::resource('testssds', 'testssdController');
-
-Route::get('login', 'Auth\AuthController@getLogin');
-Route::post('login', 'Auth\AuthController@postLogin');
-Route::get('logout', 'Auth\AuthController@logout');
-
-// Registration Routes...
-Route::get('register', 'Auth\AuthController@getRegister');
-Route::post('register', 'Auth\AuthController@postRegister');
-
-// Password Reset Routes...
-Route::get('password/reset', 'Auth\PasswordController@getEmail');
-Route::post('password/email', 'Auth\PasswordController@postEmail');
-Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
-Route::post('password/reset', 'Auth\PasswordController@postReset');
-
-Route::get('/home', 'HomeController@index');
-
-Route::resource('test2s', 'test2Controller');

@@ -2,7 +2,7 @@
 
 @section('page-header')
     <h1>
-        用户添加用户
+        修改
         <small>...</small>
     </h1>
 @endsection
@@ -23,34 +23,25 @@
 
 
         <div class="box-header with-border">
-            <h3 class="box-title">用户添加</h3>
+            <h3 class="box-title">修改</h3>
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form role="form" action="/admin/user" method="post">
+        <form role="form" action="/admin/role/{{$obj->id}}}" method="post">
+            <input type="hidden" name="_method" value="PUT">
             <div class="box-body">
                 <div class="form-group">
-                    <label for="">用户名</label>
-                    <input type="username" class="form-control" name="username" id="" placeholder="Enter username">
+                    <label for="">标示</label>
+                    <input type="text" class="form-control" name="name" id="" placeholder="权限标示" value="{{$obj->name}}" >
                 </div>
                 <div class="form-group">
-                    <label for="">密码</label>
-                    <input type="password" class="form-control" id="" name="password" placeholder="Password">
-                </div>
-
-                <div class="form-group">
-                    <label for="">email</label>
-                    <input type="text" class="form-control" id="" name="email" placeholder="mobile">
+                    <label for="">名称</label>
+                    <input type="text" class="form-control" id="" name="display_name" placeholder="名称" value="{{$obj->display_name}}" >
                 </div>
 
                 <div class="form-group">
-                    <label for="">角色</label>
-                    <select name="role_id">
-                        <option value="0">无</option>
-                        @foreach($roles as $k=>$v)
-                        <option value="{{$v->id}}">{{$v->display_name}}</option>
-                        @endforeach
-                    </select>
+                    <label for="">描述</label>
+                    <input type="text" class="form-control" id="" name="description" placeholder="描述" value="{{$obj->description}}" >
                 </div>
 
                 <!--

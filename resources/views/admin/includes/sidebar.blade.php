@@ -31,7 +31,7 @@
         <ul class="sidebar-menu">
             <li class="header">HEADER</li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="#"><i class="fa fa-link"></i> <span>控制台</span></a></li>
+            <li><a href="#"><i class="fa fa-link"></i> <span>控制台</span></a></li>
             <li><a href="#"><i class="fa fa-link"></i> <span>内容管理</span></a>
 
                 <ul class="treeview-menu">
@@ -50,7 +50,8 @@
 
                 <ul class="treeview-menu">
                     <li><a href="/admin/user" >会员列表</a></li>
-
+                    <li><a href="/admin/role" >角色管理</a></li>
+                    <li><a href="/admin/permission" >权限管理</a></li>
                 </ul>
             </li>
 

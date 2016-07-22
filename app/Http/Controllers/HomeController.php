@@ -52,7 +52,8 @@ class HomeController extends Controller
 //        Redis::rpush("aList","test111");
 //
 //        exit;
-        return response()->json(["asdf"=>view('home.index')->render()]);
+        return response()->view("home.index");;
+        //return response()->json(["asdf"=>view('home.index')->render()]);
     }
 
 
