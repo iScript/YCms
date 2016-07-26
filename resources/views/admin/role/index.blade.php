@@ -32,7 +32,7 @@
                 <table class="table table-hover">
                     <tbody><tr>
                         <th>ID</th>
-                        <th>权限标示</th>
+                        <th>角色标示</th>
                         <th>名称</th>
                         <th>描述</th>
                         <th>操作</th>
