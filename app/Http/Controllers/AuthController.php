@@ -50,15 +50,22 @@ class AuthController extends Controller
         $r = $request->all();
 
 
-
-        $user = User::whereRaw("username = ? and password = ?  ",[ $r["username"] , sha1($r["password"]) ])->first();
+        $user = User::whereRaw("username = ? and password = ?  ",[ $r["username"] , password_crypt($r["password"]) ])->first();
         if(isset($user) ){
 
             \Auth::login($user);
             // 认证通过...
             \Auth::User()->update(["last_login_time"=>date("Y-m-d H:i:s",time())]);
+
+            //
+            if(!empty($r["returnUrl"])){
+                return redirect($r["returnUrl"]);
+            }
+
             return redirect()->route('home');
         }
+
+        //echo $r["returnUrl"];exit;
 
 
         return redirect('/auth/login');
@@ -120,7 +127,7 @@ class AuthController extends Controller
         return User::create([
             'username' => $data['username'],
             //'email' => $data['email'],
-            'password' => sha1($data['password']),
+            'password' => password_crypt($data['password']),
             "register_time" => date("Y-m-d H:i:s",time()),
             "last_login_time"=> date("Y-m-d H:i:s",time()),
         ]);

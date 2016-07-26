@@ -23,7 +23,7 @@ class UserTableSeeder extends Seeder {
     public function run(){
 
         $sql = "INSERT INTO `iz_users` (`id`, `username`, `nickname`, `mobile`, `email`, `password`, `register_time`, `last_login_time`, `avatar`, `sex`, `status`, `remember_token`, `created_at`, `updated_at`, `deleted_at`)
-VALUES (1,'admin','',NULL,'456478@qq.com','".sha1("123456")."','2016-06-13 16:20:01','2016-07-22 15:36:00',NULL,0,0,'M2x3skdCW6CCDOMEEv2xrM5Az52qgSZkC1hTiHSNJ7tYKuAI93N3i0OumXqw','2016-06-13 16:20:01','2016-07-22 15:36:00',NULL)";
+VALUES (1,'admin','',NULL,'456478@qq.com','".password_crypt("123456")."','2016-06-13 16:20:01','2016-07-22 15:36:00',NULL,0,0,'M2x3skdCW6CCDOMEEv2xrM5Az52qgSZkC1hTiHSNJ7tYKuAI93N3i0OumXqw','2016-06-13 16:20:01','2016-07-22 15:36:00',NULL)";
 
         DB::insert($sql);
 

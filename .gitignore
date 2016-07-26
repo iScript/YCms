@@ -1,5 +1,5 @@
 *.env
-storage/*
+*.log
 composer.develop.json
 composer.develop.lock
 composer.lock

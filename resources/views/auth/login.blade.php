@@ -21,6 +21,10 @@
             <input id="password" type="password" placeholder="Password" name="password">
         </div>
 
+        <div>
+
+            <input type="hidden" name="returnUrl" value="{{ Request::input("returnUrl") }}">
+        </div>
 
         <div class="pure-controls">
 

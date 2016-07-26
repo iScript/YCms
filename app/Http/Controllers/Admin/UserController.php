@@ -123,7 +123,7 @@ class UserController extends Controller
         $user =  User::create([
             'username' => $data['username'],
             'email' => $email,
-            'password' => sha1($data['password']),
+            'password' => password_crypt($data['password']),
             "register_time" => date("Y-m-d H:i:s",time()),
             "last_login_time"=> date("Y-m-d H:i:s",time()),
         ]);
@@ -143,7 +143,7 @@ class UserController extends Controller
         if($data["password"] == ""){
             unset($data["password"]);
         }else{
-            $data["password"] = sha1($data['password']);
+            $data["password"] = password_crypt($data['password']);
 
         }
 

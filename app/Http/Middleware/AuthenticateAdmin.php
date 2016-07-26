@@ -22,7 +22,10 @@ class AuthenticateAdmin
     {
         // 检查是否登录
         if(!Auth::check()){
-            return redirect('/auth/login');
+
+            $returnUrl = $request->getRequestUri();
+            //echo $returnUrl;exit;
+            return redirect('/auth/login?returnUrl='.$returnUrl);
         }
 
         $name   = Route::currentRouteName();    // 获取当前路由  admin.user.edit
