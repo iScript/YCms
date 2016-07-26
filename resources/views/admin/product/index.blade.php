@@ -44,7 +44,13 @@
                     <tr>
                         <td>{!! $obj->id !!}</td>
                         <td>{!! $obj->title !!}</td>
-                        <td>{!! $obj->category->name !!}</td>
+                        <td>
+                            @if(isset($obj->category))
+                            {!! $obj->category->name !!}
+                            @else
+                                无分类
+                            @endif
+                        </td>
                         <td><img src="{{config('qiniu.host')}}/{!! $obj->picture !!}" width="40px" height="40px"/></td>
                         <td><span class="label label-warning">{!! $obj->status!!}</span></td>
                         <td>
