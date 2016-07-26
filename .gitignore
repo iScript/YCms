@@ -1,4 +1,4 @@
-*.env
+.env
 *.log
 composer.develop.json
 composer.develop.lock

@@ -14,6 +14,4 @@ if (! function_exists('password_crypt')) {
     {
         return sha1(sha1($str)."_");
     }
-
-
 }
