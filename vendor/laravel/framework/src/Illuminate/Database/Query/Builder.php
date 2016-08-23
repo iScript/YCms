@@ -1079,6 +1079,33 @@ class Builder
     }
 
     /**
+     * Add a "where time" statement to the query.
+     *
+     * @param  string  $column
+     * @param  string   $operator
+     * @param  int   $value
+     * @param  string   $boolean
+     * @return \Illuminate\Database\Query\Builder|static
+     */
+    public function whereTime($column, $operator, $value, $boolean = 'and')
+    {
+        return $this->addDateBasedWhere('Time', $column, $operator, $value, $boolean);
+    }
+
+    /**
+     * Add an "or where time" statement to the query.
+     *
+     * @param  string  $column
+     * @param  string   $operator
+     * @param  int   $value
+     * @return \Illuminate\Database\Query\Builder|static
+     */
+    public function orWhereTime($column, $operator, $value)
+    {
+        return $this->whereTime($column, $operator, $value, 'or');
+    }
+
+    /**
      * Add a "where day" statement to the query.
      *
      * @param  string  $column
@@ -1121,7 +1148,7 @@ class Builder
     }
 
     /**
-     * Add a date based (year, month, day) statement to the query.
+     * Add a date based (year, month, day, time) statement to the query.
      *
      * @param  string  $type
      * @param  string  $column
@@ -2098,6 +2125,10 @@ class Builder
      */
     public function increment($column, $amount = 1, array $extra = [])
     {
+        if (! is_numeric($amount)) {
+            throw new InvalidArgumentException('Non-numeric value passed to increment method.');
+        }
+
         $wrapped = $this->grammar->wrap($column);
 
         $columns = array_merge([$column => $this->raw("$wrapped + $amount")], $extra);
@@ -2115,6 +2146,10 @@ class Builder
      */
     public function decrement($column, $amount = 1, array $extra = [])
     {
+        if (! is_numeric($amount)) {
+            throw new InvalidArgumentException('Non-numeric value passed to decrement method.');
+        }
+
         $wrapped = $this->grammar->wrap($column);
 
         $columns = array_merge([$column => $this->raw("$wrapped - $amount")], $extra);

@@ -15,7 +15,7 @@
 // 
 
 
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/', ["uses"=>'HomeController@index','middleware'=>'throttle:60'])->name('home');
 
 Route::get('/test', 'HomeController@test');
 Route::get('/test2', 'HomeController@test2');

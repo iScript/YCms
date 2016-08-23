@@ -234,6 +234,7 @@ class Builder
     public function sign(Signer $signer, $key)
     {
         $signer->modifyHeader($this->headers);
+
         $this->signature = $signer->sign(
             $this->getToken()->getPayload(),
             $key

@@ -14,7 +14,7 @@ class CreateUsersTable extends Migration
     {
 
         Schema::create(
-            'iz_users', function (Blueprint $table) {
+            'iz_user', function (Blueprint $table) {
             $table->increments('id');
             $table->string("username",100);
             $table->string('nickname',100)->unllable();
@@ -40,6 +40,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('iz_users');
+        Schema::drop('iz_user');
     }
 }

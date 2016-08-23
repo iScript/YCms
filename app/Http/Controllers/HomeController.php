@@ -10,11 +10,21 @@ use \Response;
 use \Request;
 use Redis;
 use App\Jobs\Test;
-
+use App\Services\SmsService;
 use App\Helpers\JWT;
 
 class HomeController extends Controller
 {
+
+    protected $sms;
+
+
+    public function __construct(SmsService $smsService)
+    {
+        $this->sms = $smsService;
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -58,18 +68,20 @@ class HomeController extends Controller
 
 
     public function test2(){
-
+        $this->sms->sendVerify("15167895272");
     }
 
     public function test(){
 
         $token = JWT::createTokenByUid(45);
-        echo $token ;
+        //echo $token ;
+
+        return Response::json(["aa"=>"bb","cc"=>[1,1,2,3],"dd"=>["created"=>true]],402);
 
 
-        $str = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6IjU3ODVlODI3ODhmMDYifQ.eyJpc3MiOiJodHRwOlwvXC9leGFtcGxlLmNvbSIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUub3JnIiwianRpIjoiNTc4NWU4Mjc4OGYwNiIsImlhdCI6MTQ2ODM5MzUxMSwiZXhwIjoxNDY4MzkzNjMxLCJ1aWQiOjQ1fQ.O9-hI4J1pYIkUFfTjvSbvFkkx_KJTXeMxj9s7qCoR8o";
+        //$str = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6IjU3ODVlODI3ODhmMDYifQ.eyJpc3MiOiJodHRwOlwvXC9leGFtcGxlLmNvbSIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUub3JnIiwianRpIjoiNTc4NWU4Mjc4OGYwNiIsImlhdCI6MTQ2ODM5MzUxMSwiZXhwIjoxNDY4MzkzNjMxLCJ1aWQiOjQ1fQ.O9-hI4J1pYIkUFfTjvSbvFkkx_KJTXeMxj9s7qCoR8o";
 
-        $token = JWT::checkToken($str);
+        //$token = JWT::checkToken($str);
         //echo $token;
 
     }

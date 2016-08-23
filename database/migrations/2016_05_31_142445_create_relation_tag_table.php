@@ -15,9 +15,9 @@ class CreateRelationTagTable extends Migration
         Schema::create('iz_tag_map_article', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('article_id')->unsigned()->index();
-            $table->foreign('article_id')->references('id')->on('iz_articles')->onDelete('cascade');   //外键
+            $table->foreign('article_id')->references('id')->on('iz_article')->onDelete('cascade');   //外键
             $table->integer('tag_id')->unsigned()->index();
-            $table->foreign('tag_id')->references('id')->on('iz_tags')->onDelete('cascade');
+            $table->foreign('tag_id')->references('id')->on('iz_tag')->onDelete('cascade');
             $table->timestamps();
         });
     }
