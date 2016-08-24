@@ -71,6 +71,11 @@ class HomeController extends Controller
         $this->sms->sendVerify("15167895272");
     }
 
+    public function test3(){
+        echo 33;
+        //$this->sms->sendVerify("15167895272");
+    }
+
     public function test(){
 
         $token = JWT::createTokenByUid(45);

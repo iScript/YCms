@@ -61,7 +61,7 @@ class AuthController extends Controller
                 return redirect($r["returnUrl"]);
             }
 
-            return redirect()->route('home');
+            return redirect("/");
         }
 
         //echo $r["returnUrl"];exit;
