@@ -176,12 +176,7 @@ class ArgvInput extends Input
 
         // unexpected argument
         } else {
-            $all = $this->definition->getArguments();
-            if (count($all)) {
-                throw new RuntimeException(sprintf('Too many arguments, expected arguments "%s".', implode('" "', array_keys($all))));
-            }
-
-            throw new RuntimeException(sprintf('No arguments expected, got "%s".', $token));
+            throw new RuntimeException('Too many arguments.');
         }
     }
 

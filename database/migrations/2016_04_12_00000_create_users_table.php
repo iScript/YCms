@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             'iz_user', function (Blueprint $table) {
             $table->increments('id');
             $table->string("username",100);
-            $table->string('nickname',100)->unllable();
+            $table->string('nickname',100);
             $table->char("mobile",15)->unique()->nullable();
             $table->string('email',100)->unique()->nullable();
             $table->char('password', 60);

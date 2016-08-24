@@ -183,17 +183,7 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
             array(
                 array('cli.php', 'foo', 'bar'),
                 new InputDefinition(),
-                'No arguments expected, got "foo".',
-            ),
-            array(
-                array('cli.php', 'foo', 'bar'),
-                new InputDefinition(array(new InputArgument('number'))),
-                'Too many arguments, expected arguments "number".',
-            ),
-            array(
-                array('cli.php', 'foo', 'bar', 'zzz'),
-                new InputDefinition(array(new InputArgument('number'), new InputArgument('county'))),
-                'Too many arguments, expected arguments "number" "county".',
+                'Too many arguments.',
             ),
             array(
                 array('cli.php', '--foo'),

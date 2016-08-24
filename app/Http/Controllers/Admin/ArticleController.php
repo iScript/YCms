@@ -54,8 +54,8 @@ class ArticleController extends Controller
         //
         $input = $request->all();
         $input["published_at"] = date("Y-m-d H:i:s",time());
-        $input["uid"] = 1;
-        $article = Article::create($request->all());
+        $input["uid"] = 0;
+        $article = Article::create($input);
 
         $tags = [];
         foreach( explode(" ",$input["tags"]) as $key => $value ){

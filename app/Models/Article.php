@@ -9,7 +9,7 @@ class Article extends Model
     use SoftDeletes;
 
 
-    protected $table = 'iz_articles';
+    protected $table = 'iz_article';
 
 
     protected $fillable = ['title', 'description', 'content',"published_at","uid"];

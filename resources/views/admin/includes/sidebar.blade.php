@@ -63,8 +63,11 @@
 
 
     <script>
+
+        console.log("{{ Route::currentRouteName()  }}");
+
         //左侧戴航下拉
-        var currentRoute = "{{ Route::currentRouteName()  }}";
+        var currentRoute = "admin.{{ Route::currentRouteName()  }}";
         var e_class = "."+currentRoute.split(".")[1];
         console.log();
         $(e_class).addClass("active");

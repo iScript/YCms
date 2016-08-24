@@ -46,8 +46,8 @@ class ProductController extends Controller
     {
         //
         $input = $request->all();
-        $input["uid"] = 1;
-        Product::create($request->all());
+        $input["uid"] = 0;
+        Product::create($input);
         return redirect("admin/product");
     }
 

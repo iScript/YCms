@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Tag extends Model
 {
     //
-    protected $table = 'iz_tags';
+    protected $table = 'iz_tag';
 
     protected $fillable = ["name"];
 

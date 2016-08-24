@@ -19,7 +19,7 @@ class PermissionController extends Controller
     public function index()
     {
         $list = Permission::all();
-        return view(\Route::currentRouteName())->with("list",$list);
+        return view("admin.permission.index")->with("list",$list);
     }
 
     /**
@@ -29,7 +29,7 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        return view(\Route::currentRouteName());
+        return view("admin.permission.create");
     }
 
     /**

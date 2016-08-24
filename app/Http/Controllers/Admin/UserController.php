@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\User;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Role;

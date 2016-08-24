@@ -28,7 +28,7 @@ class AuthenticateAdmin
             return redirect('/auth/login?returnUrl='.$returnUrl);
         }
 
-        $name   = Route::currentRouteName();    // 获取当前路由  admin.user.edit
+        $name   = "admin.".Route::currentRouteName();    // 获取当前路由  admin.user.edit
 
         //echo $name;
 
