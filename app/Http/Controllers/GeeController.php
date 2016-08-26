@@ -30,15 +30,15 @@ class GeeController extends Controller
     }
 
     public function check(){
-        define("CAPTCHA_ID", "ec08b9109cc615d50b302ce476221034");
-        define("PRIVATE_KEY", "0ab8e410de5b4808e8afa6412607eb54");
-        $GtSdk = new GeetestLib(CAPTCHA_ID, PRIVATE_KEY);
-        $result = $GtSdk->success_validate($_POST['geetest_challenge'], $_POST['geetest_validate'], $_POST['geetest_seccode']);
-        if ($result) {
-            echo 'Yes!';
-        } else {
-            echo 'No';
-        }
+//        define("CAPTCHA_ID", "ec08b9109cc615d50b302ce476221034");
+//        define("PRIVATE_KEY", "0ab8e410de5b4808e8afa6412607eb54");
+//        $GtSdk = new GeetestLib(CAPTCHA_ID, PRIVATE_KEY);
+//        $result = $GtSdk->success_validate($_POST['geetest_challenge'], $_POST['geetest_validate'], $_POST['geetest_seccode']);
+//        if ($result) {
+//            echo 'Yes!';
+//        } else {
+//            echo 'No';
+//        }
 
     }
 

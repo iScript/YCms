@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
 
         <link rel="stylesheet" href="/assets/styles/ycms.css">
+        <script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
     </head>
     <body>
         <!--[if lt IE 9]>
@@ -25,7 +26,7 @@
         @yield('content')
         </div><!-- container -->
 
-        <script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+
 
         @yield('after_script')
 

@@ -26,5 +26,7 @@ class SmsService {
         Verify::create(["uid"=>0,"type"=>1,"account"=>$account,"verify"=>$verify,"ip"=>$ip,"state"=>$array["code"]]);
 
         //print_r($array);
+
+
     }
 }

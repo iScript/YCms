@@ -9,7 +9,7 @@
 @endif
 
 
-<form class="pure-form pure-form-aligned" method="post" action="/auth/login">
+<form class="pure-form pure-form-aligned" method="post" action="/login">
     <fieldset>
         <div class="pure-control-group">
             <label for="name">用户名</label>

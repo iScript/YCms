@@ -147,7 +147,7 @@
                                 <a href="#" class="btn btn-default btn-flat">Profile</a>
                             </div>
                             <div class="pull-right">
-                                <a href="/auth/logout" class="btn btn-default btn-flat">退出</a>
+                                <a href="/logout" class="btn btn-default btn-flat">退出</a>
                             </div>
                         </li>
                     </ul>

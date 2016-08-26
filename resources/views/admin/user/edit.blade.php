@@ -31,8 +31,8 @@
             <input type="hidden" name="_method" value="PUT">
             <div class="box-body">
                 <div class="form-group">
-                    <label for="">用户名</label>
-                    <input type="username" class="form-control" disabled="true" id="" placeholder="Enter username" value="{{$obj->username}}">
+                    <label for="">用户编号</label>
+                    <input type="" class="form-control" disabled="true" id="" placeholder="" value="{{$obj->id}}">
                 </div>
                 <div class="form-group">
                     <label for="">密码</label>

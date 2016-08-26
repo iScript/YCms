@@ -30,11 +30,16 @@ class AuthenticateAdmin
 
         $name   = "admin.".Route::currentRouteName();    // 获取当前路由  admin.user.edit
 
-        //echo $name;
+        $role = Auth::user()->roles()->first();
+
 
         // 是否超级管理员
         if(Auth::user()->is_super){
             return $next($request);
+        }
+
+        if(!Auth::user()->roles()->first()){
+            redirect('/');
         }
 
         // 如果权限验证不通过

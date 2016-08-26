@@ -7,6 +7,12 @@ use Validator;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
+use Illuminate\Http\Request;
+
+use App\Services\SmsService;
+use App\Services\CaptchaService;
+use App\Models\Verify;
+
 
 
 class AuthController extends Controller
@@ -23,16 +29,20 @@ class AuthController extends Controller
     */
 
 
+    protected $smsService;
+    protected $captchaService;
 
     /**
      * Create a new authentication controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(SmsService $smsService,CaptchaService $captchaService)
     {
+        $this->smsService = $smsService;
+        $this->captchaService = $captchaService;
 
-        $this->middleware('guest', ['except' => 'getLogout']);
+        //$this->middleware('guest', ['except' => 'getLogout']);
     }
 
      /**
@@ -49,7 +59,7 @@ class AuthController extends Controller
         $r = $request->all();
 
 
-        $user = User::whereRaw("username = ? and password = ?  ",[ $r["username"] , password_crypt($r["password"]) ])->first();
+        $user = User::whereRaw("username = ? and password = ? and register_type = 1  or mobile = ? and password = ? and register_type = 2",[ $r["username"] , password_crypt($r["password"]),$r["username"] , password_crypt($r["password"]) ])->first();
         if(isset($user) ){
 
             \Auth::login($user);
@@ -67,12 +77,12 @@ class AuthController extends Controller
         //echo $r["returnUrl"];exit;
 
 
-        return redirect('/auth/login');
+        return redirect('/login');
     }
 
     public function getLogout(){
         \Auth::logout();
-        return redirect('/auth/login');
+        return redirect('/login');
     }
 
      /**
@@ -89,15 +99,48 @@ class AuthController extends Controller
      */
     public function postRegister(RegisterRequest $request)
     {
+        $code = $request->input("verify_code");
+        $verify = Verify::whereRaw(" account = ? and unix_timestamp(created_at) > ?  ",[$request->input("mobile"),time()-config("sms.valid_time")])->orderBy('created_at', 'desc')->first();
+        if(!($verify && $code != null && $verify->verify == $code)){
+           return  redirect()->back()->withErrors("验证码不正确");
+        }
 
 
         \Auth::login($this->create($request->all()));
         
         //
-        return redirect()->route('home');
+        return redirect("/");
     }
 
 
+    /***
+     * 验证码短信发送接口
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function verify_code(Request $request)
+    {
+
+        $mobile = $request->input("mobile");
+        if(!preg_match("/^1[34578]{1}\d{9}$/",$mobile)){
+            return response()->json(['code' => '400', 'message' => '请输入正确的手机号', "data" => ""]);
+        }
+
+        $verify = Verify::whereRaw(" account = ? and unix_timestamp(created_at) > ?  ",[$mobile,time()-config("sms.wait_time")])->orderBy('created_at', 'desc')->first();
+        if($verify){
+            return response()->json(['code' => '400', 'message' => '发送时间太频繁了', "data" => ""]);
+        }
+
+
+        $isPass = $this->captchaService->check($request->all());
+        if(!$isPass){
+            return response()->json(['code' => '400', 'message' => '验证失败,请过几分钟重试', "data" => ""]);
+        }
+
+        $this->smsService->sendVerify($mobile);
+
+        return response()->json(['code' => '200', 'message' => '短信发送成功', "data" => ""]);
+    }
 
 
     /**
@@ -124,11 +167,12 @@ class AuthController extends Controller
     protected function create(array $data)
     {   
         return User::create([
-            'username' => $data['username'],
-            //'email' => $data['email'],
+            'mobile' => $data['mobile'],
+            'nickname' => substr_replace($data['mobile'],'****',3,4),
             'password' => password_crypt($data['password']),
             "register_time" => date("Y-m-d H:i:s",time()),
             "last_login_time"=> date("Y-m-d H:i:s",time()),
+            "register_type"=>2
         ]);
     }
 }

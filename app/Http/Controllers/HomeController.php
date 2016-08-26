@@ -63,17 +63,17 @@ class HomeController extends Controller
 //
 //        exit;
         return response()->view("home.index");;
-        //return response()->json(["asdf"=>view('home.index')->render()]);
+
     }
 
 
     public function test2(){
-        $this->sms->sendVerify("15167895272");
+        //$this->sms->sendVerify("15167895272");
     }
 
     public function test3(){
         echo 33;
-        //$this->sms->sendVerify("15167895272");
+
     }
 
     public function test(){

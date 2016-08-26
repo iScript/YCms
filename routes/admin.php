@@ -1,15 +1,11 @@
 <?php
 
-Route::get('/testadmin', 'HomeController@test3');
-
 /**
  * Backend Routes
  * Namespaces indicate folder structure
  * Admin middleware groups web, auth, and routeNeedsPermission
  */
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin','middleware' => ['admin']], function () {
-
-
 
     //Route::get('dashboard', 'DashboardController@index')->name('admin.dashboard');
     Route::get('/', 'DashboardController@index')->name('home.index');
