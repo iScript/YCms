@@ -149,16 +149,11 @@ class UserController extends Controller
 
         $user->update($data);
 
-
-
         if(isset($data["role_id"])){
-
             $user->roles()->detach();
-
             if($data["role_id"] != "0"){
                 $user->attachRole($data["role_id"]);
             }
-
         }
 
         return $user;

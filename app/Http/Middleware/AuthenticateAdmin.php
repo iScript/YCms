@@ -38,8 +38,10 @@ class AuthenticateAdmin
             return $next($request);
         }
 
-        if(!Auth::user()->roles()->first()){
-            redirect('/');
+
+        // 是否具备角色,否则直接不通过.
+        if(empty(Auth::user()->roles()->first())){
+            return redirect('/');
         }
 
         // 如果权限验证不通过
@@ -49,7 +51,6 @@ class AuthenticateAdmin
 
             }else{
                 return response()->view('admin.errors.403');
-
             }
 
         }
