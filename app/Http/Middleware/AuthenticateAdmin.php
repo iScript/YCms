@@ -25,7 +25,7 @@ class AuthenticateAdmin
 
             $returnUrl = $request->getRequestUri();
             //echo $returnUrl;exit;
-            return redirect('/auth/login?returnUrl='.$returnUrl);
+            return redirect('/login?returnUrl='.$returnUrl);
         }
 
         $name   = "admin.".Route::currentRouteName();    // 获取当前路由  admin.user.edit

@@ -37,7 +37,7 @@ Route::group(['middleware' => 'guest'], function () use ($router) {
 
 
 //Route::post("upload","QiniuController@simditor_upload");
-//Route::get("qiniu/token","QiniuController@token");
+Route::get("qiniu/token","QiniuController@token");
 
 //Route::get("/captchaform" ,['as' => 'captchaform', 'uses' => 'GeeController@index']);
 Route::get("/captcha" ,['as' => 'captcha', 'uses' => 'GeeController@captcha']);

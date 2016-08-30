@@ -12,7 +12,7 @@ class Article extends Model
     protected $table = 'iz_article';
 
 
-    protected $fillable = ['title', 'description', 'content',"published_at","uid"];
+    protected $fillable = ['title', 'description', 'content',"published_at","uid","cover","status","sort","cat_id","is_link","link","is_top","is_rec"];
 
 
     public function getStatusStringAttribute()

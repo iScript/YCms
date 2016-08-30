@@ -8,7 +8,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Tag;
-
+use App\Models\Article_category as Category;
 
 class ArticleController extends Controller
 {
@@ -20,11 +20,8 @@ class ArticleController extends Controller
     public function index()
     {
 
-//        $a = Article::find(28);
-//        var_dump($a->tags()->get());
-//        $a->tags()->sync([3]);
-//        exit;
-        $list = Article::orderBy('id', 'DESC')->paginate(2);
+
+        $list = Article::orderBy('id', 'DESC')->paginate(10);
 
 
         //$list->appends(['sort' => 'votes']);
@@ -40,7 +37,8 @@ class ArticleController extends Controller
     public function create()
     {
         //
-        return view('admin.article.create');
+        $category = Category::where("pid","0")->get();;
+        return view('admin.article.create',["category"=>$category]);
     }
 
     /**
@@ -89,9 +87,10 @@ class ArticleController extends Controller
     public function edit($id)
     {
         //
+        $category = Category::where("pid","0")->get();;
         $article = Article::findOrFail($id);
 
-        return view('admin.article.edit')->with("article",$article);;
+        return view('admin.article.edit')->with("article",$article)->with("category",$category);
     }
 
     /**
