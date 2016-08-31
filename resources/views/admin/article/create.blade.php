@@ -43,7 +43,11 @@
 
                 <div class="form-group">
                     <label for="">内容</label>
-                    <textarea id="editor" name="content"></textarea>
+
+
+                    <script id="container" name="content" type="text/plain">
+
+                    </script>
                 </div>
 
                 <div class="form-group">
@@ -94,27 +98,7 @@
     </div>
 
 
-    <link rel="stylesheet" type="text/css" href="/assets/simditor/styles/simditor.css" />
 
-    <script type="text/javascript" src="/assets/simditor/scripts/module.js"></script>
-    <script type="text/javascript" src="/assets/simditor/scripts/hotkeys.js"></script>
-    <script type="text/javascript" src="/assets/simditor/scripts/uploader.js"></script>
-    <script type="text/javascript" src="/assets/simditor/scripts/simditor.js"></script>
-    <script>
-        var editor = new Simditor({
-            textarea: $('#editor'),
-            placeholder : "请输入",
-            toolbar  : ['title','bold','italic','underline','strikethrough','fontScale','color','ol' ,'ul','blockquote','code','table','link','image','hr','alignment'],
-            upload:{
-                url: '/upload',
-                params: null,
-                fileKey: 'upload_file',
-                connectionCount: 3,
-                leaveConfirm: '正在上传,确认离开?'
-            }
-        });
-
-    </script>
 
 
     <script type="text/javascript" src="/assets/plupload/plupload.full.min.js"></script>
@@ -186,7 +170,30 @@
 
 
     </script>
+    <!-- 配置文件 -->
+    <script type="text/javascript" src="/assets/ueditor/ueditor.config.js"></script>
+    <!-- 编辑器源码文件 -->
+    <script type="text/javascript" src="/assets/ueditor/ueditor.all.js"></script>
+    <!-- 实例化编辑器 -->
+    <script type="text/javascript">
+        var ue = UE.getEditor('container',{
 
+            autoHeightEnabled : true,
+            initialFrameHeight : "400",
+            toolbars: [[
+                'fullscreen', 'source', '|', 'undo', 'redo', '|',
+                'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
+                'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
+                 'paragraph',  'fontsize','indent', '|',
+                'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
+                'link', 'unlink', 'anchor', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
+                'simpleupload', 'insertimage', 'emotion', 'scrawl', 'insertvideo',   'insertframe', 'insertcode',   '|',
+                'horizontal',
+                'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts', '|',
+                'print', 'preview', 'searchreplace', 'drafts'
+            ]]
+        });
+    </script>
 
 @endsection
 

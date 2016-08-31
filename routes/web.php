@@ -36,6 +36,11 @@ Route::group(['middleware' => 'guest'], function () use ($router) {
 
 
 
+Route::get("/article/{id}","ArticleController@show");
+
+
+
+
 //Route::post("upload","QiniuController@simditor_upload");
 Route::get("qiniu/token","QiniuController@token");
 
