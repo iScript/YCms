@@ -44,6 +44,11 @@ class User extends Authenticatable
      */
     protected $hidden = ['password', 'remember_token'];
 
+
+    // 附加属性
+    protected $appends = ['is_super'];
+
+
     // 头像 ,返回七牛路径
     public function getAvatarAttribute($value)
     {
@@ -56,9 +61,18 @@ class User extends Authenticatable
 
     }
 
+    //定义一号用户为超级用户
+    public function getDislayAccountAttribute()
+    {
+        if($this->register_type == 1){
+            return $this->email;
+        }elseif($this->register_type == 2){
+            return $this->mobile;
+        }else{
+            return $this->mobile;
+        }
+    }
 
-    // 附加属性
-    protected $appends = ['is_super'];
 
     //定义一号用户为超级用户
     public function getIsSuperAttribute()

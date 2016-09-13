@@ -5,9 +5,9 @@ Free,open-source CMS based on the Laravel PHP Framework
 ## Requirements
 
 - **PHP : 5.6+
-- **Laravel : 5.2+
+- **Laravel : 5.3+
 - **Mysql
-- **Redis
+- **Redis !!!
 
 
 
@@ -23,8 +23,8 @@ Free,open-source CMS based on the Laravel PHP Framework
 1. **`php artisan serve`**
 
 
-> UserName: admin
-> password: 123456
+> UserName: admin@admin.com
+> password: admin123456
 
 
 

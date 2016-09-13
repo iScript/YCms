@@ -32,8 +32,8 @@
                 <table class="table table-hover">
                     <tbody><tr>
                         <th>ID</th>
-                        <th>用户名</th>
-                        <th>手机</th>
+                        <th>账户</th>
+                        <th>昵称</th>
                         <th>角色</th>
                         <th>状态</th>
                         <th>操作</th>
@@ -42,8 +42,8 @@
                     @foreach ($users as $user)
                     <tr>
                         <td>{!! $user->id !!}</td>
-                        <td>{!! $user->mobile !!}</td>
-                        <td>{!! $user->email !!}</td>
+                        <td>{!! $user->display_account !!}</td>
+                        <td>{!! $user->nickname !!}</td>
                         <td>@if(isset($user->roles[0])) <button type="button" class="btn  btn-info btn-xs">{{$user->roles[0]->display_name}} </button> @endif</td>
                         <td><span class="label label-warning">{!! $user->status !!}</span></td>
                         <td>
