@@ -59,7 +59,7 @@ class AuthController extends Controller
         $r = $request->all();
 
 
-        $user = User::whereRaw("username = ? and password = ? and register_type = 1  or mobile = ? and password = ? and register_type = 2",[ $r["username"] , password_crypt($r["password"]),$r["username"] , password_crypt($r["password"]) ])->first();
+        $user = User::whereRaw("email = ? and password = ? and register_type = 1  or mobile = ? and password = ? and register_type = 2",[ $r["username"] , password_crypt($r["password"]),$r["username"] , password_crypt($r["password"]) ])->first();
         if(isset($user) ){
 
             \Auth::login($user);

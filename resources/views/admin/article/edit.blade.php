@@ -31,7 +31,7 @@
             <input type="hidden" name="_method" value="PUT">
             <div class="box-body">
                 <div class="form-group">
-                    <label for="">标题</label>
+                    <label for="">标题 </label>
                     <input type="title" class="form-control" name="title" id="" placeholder="" value="{{$article->title}}">
                 </div>
                 <div class="form-group">
@@ -66,7 +66,7 @@
                     <input type="hidden" class="form-control" id="cover" name="cover" placeholder="" value="{{$article->cover}}">
 
                     <button id="up" type="button">上传封面</button>
-                    <img src="{{ config('qiniu.host') }}/{{$article->cover}}" id="up_img" />
+                    <img src="{{$article->cover_real}}" id="up_img" />
                 </div>
 
 
@@ -75,7 +75,7 @@
                     是<input type="radio" name="is_link" value="0" @if($article->is_link == 0) checked="true" @endif /> 否 <input type="radio" name="is_link" value="1" @if($article->is_link == 1) checked="true" @endif />
                     &nbsp&nbsp&nbsp&nbsp&nbsp
                     <label for="">地址:</label>
-                    <input type="text" class="form-control" id="" name="link" placeholder="" value="{{$article->link}}">
+                    <input type="text" class="form-control" id="" name="link" placeholder="" value="{{$article->link}}" >
                 </div>
 
 
@@ -93,7 +93,75 @@
         </form>
     </div>
 
+    <script type="text/javascript" src="/assets/plupload/plupload.full.min.js"></script>
+    <script type="text/javascript">
+        var token = "";
+        var host = "{{config('qiniu.host')}}";
+        function uploadinit() {
+            var uploader = new plupload.Uploader({
+                runtimes: 'html5',
+                browse_button: document.getElementById('up'), // you can pass an id...
+                url: 'http://up.qiniu.com',
+                //flash_swf_url : 'plupload/Moxie.swf',
+                multipart_params: {
+                    // token从服务端获取，没有token无法上传
+                    token: token
+                },
+                filters: {
+                    max_file_size: '300kb',
+                    mime_types: [
+                        {title: "Image files", extensions: "jpg,gif,png"},
+                        {title: "Zip files", extensions: "zip"}
+                    ]
+                },
 
+                init: {
+                    PostInit: function () {
+                        console.log("upload init");
+                    },
+                    FilesAdded: function (up, files) {
+
+                        //选择文件后直接上传， 或可改成点击按钮上传
+                        uploader.start();
+                    },
+                    UploadProgress: function (up, file) {
+
+                    },
+                    FileUploaded: function (up, file, info) {
+                        //{response: "{"hash":"FjTrY2r9G1pXtxiN-jAi6qb2E1tz","key":"FjTrY2r9G1pXtxiN-jAi6qb2E1tz"}", status: 200, responseHeaders: "Pragma: no-cache"}
+                        //上传成功 key则代表七牛的文件名 ， 使用域名+key 拼接
+                        console.log(info.response);
+                        $("#up_img").attr("src", host + "/" + JSON.parse(info.response).key);
+                        $("#cover").val(JSON.parse(info.response).key);
+                        //$("#up_img").show();
+                    },
+                    UploadComplete: function (up, files) {
+                        // Called when all files are either uploaded or failed
+                        console.log('[完成]');
+                    },
+                    Error: function (up, err) {
+                        alert('图片上传错误,请联系管理员');
+                    }
+                }
+            });
+            uploader.init();
+
+        }
+
+
+        $.get("/qiniu/token", function (result) {
+            console.log(result);
+            if (result.code != 200) {
+                console.log("token 获取失败~");
+                return;
+            }
+            token = result.token;
+            //host = result.host;
+            uploadinit();
+        });
+
+
+    </script>
     <!-- 配置文件 -->
     <script type="text/javascript" src="/assets/ueditor/ueditor.config.js"></script>
     <!-- 编辑器源码文件 -->

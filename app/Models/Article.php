@@ -24,9 +24,25 @@ class Article extends Model
             return "审核通过";
 
         }
-
-        //return $this->email."--".$this->id."--".rand(1,100);
     }
+
+    public function getUrlAttribute($value)
+    {
+        if($this->is_link == 1){
+            return $this->link;
+        }else{
+
+            return url("/article/".$this->id);
+        }
+    }
+
+    public function getCoverRealAttribute($value)
+    {
+
+        return config("qiniu.host")."/".$this->cover;
+    }
+
+
 
     public function tags()
     {

@@ -22,8 +22,8 @@ class UserTableSeeder extends Seeder {
 
     public function run(){
 
-        $sql = "INSERT INTO `iz_user` (`id`, `username`, `nickname`, `mobile`, `email`, `password`, `register_time`, `last_login_time`, `avatar`, `sex`, `status`, `remember_token`,`register_type` ,`created_at`, `updated_at`, `deleted_at`)
-VALUES (1,'admin','admin',NULL,'456478@qq.com','".password_crypt("123456")."','2016-06-13 16:20:01','2016-07-22 15:36:00',NULL,0,0,'M2x3skdCW6CCDOMEEv2xrM5Az52qgSZkC1hTiHSNJ7tYKuAI93N3i0OumXqw',1,'2016-06-13 16:20:01','2016-07-22 15:36:00',NULL)";
+        $sql = "INSERT INTO `iz_user` (`id`,  `nickname`, `mobile`, `email`, `password`, `register_time`, `last_login_time`, `avatar`, `sex`, `status`, `remember_token`,`register_type` ,`created_at`, `updated_at`, `deleted_at`)
+VALUES (1,'admin',NULL,'admin@admin.com','".password_crypt("admin123456")."','2016-06-13 16:20:01','2016-07-22 15:36:00',NULL,0,0,'M2x3skdCW6CCDOMEEv2xrM5Az52qgSZkC1hTiHSNJ7tYKuAI93N3i0OumXqw',1,'2016-06-13 16:20:01','2016-07-22 15:36:00',NULL)";
 
         DB::insert($sql);
 
