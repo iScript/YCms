@@ -28,8 +28,8 @@ class RegisterRequest extends Request
     public function rules()
     {
         return [
-            'mobile'     => 'required|max:15|unique:iz_user',
-            'password' => 'required|min:3',
+            //'mobile'     => 'required|max:15|unique:iz_user',
+            //'password' => 'required|min:3',
 
         ];
     }

@@ -39,10 +39,6 @@
                     <input type="password" class="form-control" id="" name="password" placeholder="Password" value="" >
                 </div>
 
-                <div class="form-group">
-                    <label for="">email</label>
-                    <input type="text" class="form-control" id="" name="email" placeholder="email" value="{{$obj->email}}" >
-                </div>
 
                 <div class="form-group">
                     <label for="">角色 </label>

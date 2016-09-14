@@ -30,17 +30,22 @@
         <form role="form" action="/admin/user" method="post">
             <div class="box-body">
                 <div class="form-group">
-                    <label for="">用户名</label>
-                    <input type="username" class="form-control" name="username" id="" placeholder="Enter username">
+                    <label for="">账号</label>
+                    <input type="text" class="form-control" name="account" id="" placeholder="邮箱/手机" value="">
                 </div>
                 <div class="form-group">
                     <label for="">密码</label>
-                    <input type="password" class="form-control" id="" name="password" placeholder="Password">
+                    <input type="password" class="form-control" id="" name="password" placeholder="密码" value="">
                 </div>
 
                 <div class="form-group">
-                    <label for="">email</label>
-                    <input type="text" class="form-control" id="" name="email" placeholder="mobile">
+                    <label for="">用户类型</label>
+                    <select name="register_type">
+                        <option value="1">邮箱</option>
+                        <option value="2">手机</option>
+
+
+                    </select>
                 </div>
 
                 <div class="form-group">

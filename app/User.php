@@ -62,14 +62,14 @@ class User extends Authenticatable
     }
 
     //定义一号用户为超级用户
-    public function getDislayAccountAttribute()
+    public function getDisplayAccountAttribute()
     {
         if($this->register_type == 1){
             return $this->email;
         }elseif($this->register_type == 2){
             return $this->mobile;
         }else{
-            return $this->mobile;
+            return "unknown";
         }
     }
 
