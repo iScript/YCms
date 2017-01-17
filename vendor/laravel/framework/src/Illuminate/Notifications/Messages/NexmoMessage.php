@@ -19,9 +19,16 @@ class NexmoMessage
     public $from;
 
     /**
+     * The message type.
+     *
+     * @var string
+     */
+    public $type = 'text';
+
+    /**
      * Create a new message instance.
      *
-     * @param  string  $message
+     * @param  string  $content
      * @return void
      */
     public function __construct($content = '')
@@ -45,12 +52,24 @@ class NexmoMessage
     /**
      * Set the phone number the message should be sent from.
      *
-     * @param  string  $number
+     * @param  string  $from
      * @return $this
      */
     public function from($from)
     {
         $this->from = $from;
+
+        return $this;
+    }
+
+    /**
+     * Set the message type.
+     *
+     * @return $this
+     */
+    public function unicode()
+    {
+        $this->type = 'unicode';
 
         return $this;
     }

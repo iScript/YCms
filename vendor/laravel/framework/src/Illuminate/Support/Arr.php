@@ -134,7 +134,13 @@ class Arr
     public static function first($array, callable $callback = null, $default = null)
     {
         if (is_null($callback)) {
-            return empty($array) ? value($default) : reset($array);
+            if (empty($array)) {
+                return value($default);
+            }
+
+            foreach ($array as $item) {
+                return $item;
+            }
         }
 
         foreach ($array as $key => $value) {
@@ -287,6 +293,10 @@ class Arr
 
         foreach ($keys as $key) {
             $subKeyArray = $array;
+
+            if (static::exists($array, $key)) {
+                continue;
+            }
 
             foreach (explode('.', $key) as $segment) {
                 if (static::accessible($subKeyArray) && static::exists($subKeyArray, $segment)) {
@@ -448,13 +458,26 @@ class Arr
     }
 
     /**
-     * Sort the array using the given callback.
+     * Shuffle the given array and return the result.
      *
      * @param  array  $array
-     * @param  callable  $callback
      * @return array
      */
-    public static function sort($array, callable $callback)
+    public static function shuffle($array)
+    {
+        shuffle($array);
+
+        return $array;
+    }
+
+    /**
+     * Sort the array using the given callback or "dot" notation.
+     *
+     * @param  array  $array
+     * @param  callable|string  $callback
+     * @return array
+     */
+    public static function sort($array, $callback)
     {
         return Collection::make($array)->sortBy($callback)->all();
     }

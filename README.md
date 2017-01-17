@@ -1,35 +1,27 @@
-## YCms
-Free,open-source CMS based on the Laravel PHP Framework
+# Laravel PHP Framework
 
+[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
+[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
+[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
+[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
+[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
 
-## Requirements
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
 
-- **PHP : 5.6+
-- **Laravel : 5.3+
-- **Mysql
-- **Redis !!!
+Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
 
+## Official Documentation
 
+Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
 
-## Installation
+## Contributing
 
-1. **`git clone https://github.com/iScript/YCms.git`**
-1. **`cd YCms`**
-1. **`chmod -R 777 storage/`**
-1. **`composer install`**
-1. **`cp .env.example .env && vim .env`**
-1. **`php artisan migrate`**
-1. **`php artisan db:seed`**
-1. **`php artisan serve`**
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
 
+## Security Vulnerabilities
 
-> UserName: admin@admin.com
-> password: admin123456
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
 
+## License
 
-
-## Page Preview
-![](http://oawuukyq8.bkt.clouddn.com/888D2F7D-4BA6-4F5E-AF46-8553BAC471C9.png)
-![](http://oawuukyq8.bkt.clouddn.com/7A172D43-7B6C-4A54-82D8-59E9EDC6E204.png)
-![](http://oawuukyq8.bkt.clouddn.com/74BD9ADB-CB3A-4E6E-9D4A-799F584E1D7C.png)
-![](http://oawuukyq8.bkt.clouddn.com/15D30DD4-0A54-4906-B5F2-49585722E1CA.png)
+The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).

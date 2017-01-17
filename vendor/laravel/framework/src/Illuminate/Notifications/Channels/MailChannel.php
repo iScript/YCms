@@ -4,6 +4,7 @@ namespace Illuminate\Notifications\Channels;
 
 use Illuminate\Support\Str;
 use Illuminate\Contracts\Mail\Mailer;
+use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Notifications\Notification;
 
 class MailChannel
@@ -41,13 +42,29 @@ class MailChannel
 
         $message = $notification->toMail($notifiable);
 
+        if ($message instanceof Mailable) {
+            return $message->send($this->mailer);
+        }
+
         $this->mailer->send($message->view, $message->data(), function ($m) use ($notifiable, $notification, $message) {
-            $recipients = $notifiable->routeNotificationFor('mail');
+            $recipients = empty($message->to) ? $notifiable->routeNotificationFor('mail') : $message->to;
+
+            if (! empty($message->from)) {
+                $m->from($message->from[0], isset($message->from[1]) ? $message->from[1] : null);
+            }
 
             if (is_array($recipients)) {
                 $m->bcc($recipients);
             } else {
                 $m->to($recipients);
+            }
+
+            if ($message->cc) {
+                $m->cc($message->cc);
+            }
+
+            if (! empty($message->replyTo)) {
+                $m->replyTo($message->replyTo[0], isset($message->replyTo[1]) ? $message->replyTo[1] : null);
             }
 
             $m->subject($message->subject ?: Str::title(
@@ -60,6 +77,10 @@ class MailChannel
 
             foreach ($message->rawAttachments as $attachment) {
                 $m->attachData($attachment['data'], $attachment['name'], $attachment['options']);
+            }
+
+            if (! is_null($message->priority)) {
+                $m->setPriority($message->priority);
             }
         });
     }

@@ -459,14 +459,17 @@ class Builder
      *
      * @param  bool  $value
      * @param  \Closure  $callback
+     * @param  \Closure  $default
      * @return \Illuminate\Database\Query\Builder
      */
-    public function when($value, $callback)
+    public function when($value, $callback, $default = null)
     {
         $builder = $this;
 
         if ($value) {
             $builder = call_user_func($callback, $builder);
+        } elseif ($default) {
+            $builder = call_user_func($default, $builder);
         }
 
         return $builder;
@@ -582,7 +585,7 @@ class Builder
     /**
      * Add an "or where" clause to the query.
      *
-     * @param  string  $column
+     * @param  \Closure|string  $column
      * @param  string  $operator
      * @param  mixed   $value
      * @return \Illuminate\Database\Query\Builder|static
@@ -909,7 +912,11 @@ class Builder
 
         $this->wheres[] = compact('type', 'column', 'values', 'boolean');
 
-        $this->addBinding($values, 'where');
+        foreach ($values as $value) {
+            if (! $value instanceof Expression) {
+                $this->addBinding($value, 'where');
+            }
+        }
 
         return $this;
     }
@@ -977,7 +984,7 @@ class Builder
     }
 
     /**
-     * Add a external sub-select to the query.
+     * Add an external sub-select to the query.
      *
      * @param  string   $column
      * @param  \Illuminate\Database\Query\Builder|static  $query
@@ -1656,7 +1663,7 @@ class Builder
 
         $total = $this->getCountForPagination($columns);
 
-        $results = $total ? $this->forPage($page, $perPage)->get($columns) : [];
+        $results = $total ? $this->forPage($page, $perPage)->get($columns) : collect();
 
         return new LengthAwarePaginator($results, $total, $perPage, $page, [
             'path' => Paginator::resolveCurrentPath(),
@@ -1723,7 +1730,7 @@ class Builder
     }
 
     /**
-     * Backup some fields for the pagination count.
+     * Backup then remove some fields for the pagination count.
      *
      * @return void
      */
@@ -1800,9 +1807,17 @@ class Builder
      */
     public function chunk($count, callable $callback)
     {
-        $results = $this->forPage($page = 1, $count)->get();
+        $page = 1;
 
-        while (! $results->isEmpty()) {
+        do {
+            $results = $this->forPage($page, $count)->get();
+
+            $countResults = $results->count();
+
+            if ($countResults == 0) {
+                break;
+            }
+
             // On each chunk result set, we will pass them to the callback and then let the
             // developer take care of everything within the callback, which allows us to
             // keep the memory low for spinning through large result sets for working.
@@ -1811,9 +1826,7 @@ class Builder
             }
 
             $page++;
-
-            $results = $this->forPage($page, $count)->get();
-        }
+        } while ($countResults == $count);
 
         return true;
     }
@@ -1829,21 +1842,27 @@ class Builder
      */
     public function chunkById($count, callable $callback, $column = 'id', $alias = null)
     {
-        $lastId = null;
-
         $alias = $alias ?: $column;
 
-        $results = $this->forPageAfterId($count, 0, $column)->get();
+        $lastId = 0;
 
-        while (! $results->isEmpty()) {
+        do {
+            $clone = clone $this;
+
+            $results = $clone->forPageAfterId($count, $lastId, $column)->get();
+
+            $countResults = $results->count();
+
+            if ($countResults == 0) {
+                break;
+            }
+
             if (call_user_func($callback, $results) === false) {
                 return false;
             }
 
             $lastId = $results->last()->{$alias};
-
-            $results = $this->forPageAfterId($count, $lastId, $column)->get();
-        }
+        } while ($countResults == $count);
 
         return true;
     }
@@ -1859,7 +1878,7 @@ class Builder
      */
     public function each(callable $callback, $count = 1000)
     {
-        if (is_null($this->orders) && is_null($this->unionOrders)) {
+        if (empty($this->orders) && empty($this->unionOrders)) {
             throw new RuntimeException('You must specify an orderBy clause when using the "each" function.');
         }
 
@@ -1954,51 +1973,53 @@ class Builder
      * Retrieve the minimum value of a given column.
      *
      * @param  string  $column
-     * @return float|int
+     * @return mixed
      */
     public function min($column)
     {
-        return $this->numericAggregate(__FUNCTION__, [$column]);
+        return $this->aggregate(__FUNCTION__, [$column]);
     }
 
     /**
      * Retrieve the maximum value of a given column.
      *
      * @param  string  $column
-     * @return float|int
+     * @return mixed
      */
     public function max($column)
     {
-        return $this->numericAggregate(__FUNCTION__, [$column]);
+        return $this->aggregate(__FUNCTION__, [$column]);
     }
 
     /**
      * Retrieve the sum of the values of a given column.
      *
      * @param  string  $column
-     * @return float|int
+     * @return mixed
      */
     public function sum($column)
     {
-        return $this->numericAggregate(__FUNCTION__, [$column]);
+        $result = $this->aggregate(__FUNCTION__, [$column]);
+
+        return $result ?: 0;
     }
 
     /**
      * Retrieve the average of the values of a given column.
      *
      * @param  string  $column
-     * @return float|int
+     * @return mixed
      */
     public function avg($column)
     {
-        return $this->numericAggregate(__FUNCTION__, [$column]);
+        return $this->aggregate(__FUNCTION__, [$column]);
     }
 
     /**
      * Alias for the "avg" method.
      *
      * @param  string  $column
-     * @return float|int
+     * @return mixed
      */
     public function average($column)
     {
@@ -2141,12 +2162,10 @@ class Builder
      */
     public function update(array $values)
     {
-        $bindings = array_values(array_merge($values, $this->getBindings()));
-
         $sql = $this->grammar->compileUpdate($this, $values);
 
         return $this->connection->update($sql, $this->cleanBindings(
-            $this->grammar->prepareBindingsForUpdate($bindings, $values)
+            $this->grammar->prepareBindingsForUpdate($this->bindings, $values)
         ));
     }
 
@@ -2163,7 +2182,7 @@ class Builder
             return $this->insert(array_merge($attributes, $values));
         }
 
-        return (bool) $this->where($attributes)->take(1)->update($values);
+        return (bool) $this->take(1)->update($values);
     }
 
     /**

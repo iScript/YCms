@@ -513,7 +513,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
      */
     protected function compileUnless($expression)
     {
-        return "<?php if ( ! $expression): ?>";
+        return "<?php if (! $expression): ?>";
     }
 
     /**
@@ -579,7 +579,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
      */
     protected function compileForeach($expression)
     {
-        preg_match('/\( *(.*) +as *([^\)]*)/i', $expression, $matches);
+        preg_match('/\( *(.*) +as *(.*)\)$/is', $expression, $matches);
 
         $iteratee = trim($matches[1]);
 
@@ -624,7 +624,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
     {
         $empty = '$__empty_'.++$this->forelseCounter;
 
-        preg_match('/\( *(.*) +as *([^\)]*)/', $expression, $matches);
+        preg_match('/\( *(.*) +as *(.*)\)$/is', $expression, $matches);
 
         $iteratee = trim($matches[1]);
 
@@ -930,7 +930,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
      * @param  string  $expression
      * @return string
      */
-    protected function stripParentheses($expression)
+    public function stripParentheses($expression)
     {
         if (Str::startsWith($expression, '(')) {
             $expression = substr($expression, 1, -1);

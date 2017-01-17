@@ -140,6 +140,22 @@ class Filesystem
     }
 
     /**
+     * Get or set UNIX mode of a file or directory.
+     *
+     * @param  string  $path
+     * @param  int  $mode
+     * @return mixed
+     */
+    public function chmod($path, $mode = null)
+    {
+        if ($mode) {
+            return chmod($path, $mode);
+        }
+
+        return substr(sprintf('%o', fileperms($path)), -4);
+    }
+
+    /**
      * Delete the file at a given path.
      *
      * @param  string|array  $paths
@@ -303,6 +319,17 @@ class Filesystem
     public function isDirectory($directory)
     {
         return is_dir($directory);
+    }
+
+    /**
+     * Determine if the given path is readable.
+     *
+     * @param  string  $path
+     * @return bool
+     */
+    public function isReadable($path)
+    {
+        return is_readable($path);
     }
 
     /**

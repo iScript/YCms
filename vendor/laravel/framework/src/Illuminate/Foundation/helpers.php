@@ -28,7 +28,7 @@ if (! function_exists('abort')) {
      */
     function abort($code, $message = '', array $headers = [])
     {
-        return app()->abort($code, $message, $headers);
+        app()->abort($code, $message, $headers);
     }
 }
 
@@ -76,7 +76,7 @@ if (! function_exists('abort_unless')) {
 
 if (! function_exists('action')) {
     /**
-     * Generate a URL to a controller action.
+     * Generate the URL to a controller action.
      *
      * @param  string  $name
      * @param  array   $parameters
@@ -157,11 +157,12 @@ if (! function_exists('back')) {
      *
      * @param  int    $status
      * @param  array  $headers
+     * @param  string  $fallback
      * @return \Illuminate\Http\RedirectResponse
      */
-    function back($status = 302, $headers = [])
+    function back($status = 302, $headers = [], $fallback = false)
     {
-        return app('redirect')->back($status, $headers);
+        return app('redirect')->back($status, $headers, $fallback);
     }
 }
 
@@ -385,17 +386,26 @@ if (! function_exists('elixir')) {
      */
     function elixir($file, $buildDirectory = 'build')
     {
-        static $manifest;
+        static $manifest = [];
         static $manifestPath;
 
-        if (is_null($manifest) || $manifestPath !== $buildDirectory) {
-            $manifest = json_decode(file_get_contents(public_path($buildDirectory.'/rev-manifest.json')), true);
+        if (empty($manifest) || $manifestPath !== $buildDirectory) {
+            $path = public_path($buildDirectory.'/rev-manifest.json');
 
-            $manifestPath = $buildDirectory;
+            if (file_exists($path)) {
+                $manifest = json_decode(file_get_contents($path), true);
+                $manifestPath = $buildDirectory;
+            }
         }
 
         if (isset($manifest[$file])) {
             return '/'.trim($buildDirectory.'/'.$manifest[$file], '/');
+        }
+
+        $unversioned = public_path($file);
+
+        if (file_exists($unversioned)) {
+            return '/'.trim($file, '/');
         }
 
         throw new InvalidArgumentException("File {$file} not defined in asset manifest.");
@@ -644,7 +654,7 @@ if (! function_exists('resource_path')) {
      */
     function resource_path($path = '')
     {
-        return app()->basePath().DIRECTORY_SEPARATOR.'resources'.($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return app()->resourcePath().($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
@@ -671,7 +681,7 @@ if (! function_exists('response')) {
 
 if (! function_exists('route')) {
     /**
-     * Generate a URL to a named route.
+     * Generate the URL to a named route.
      *
      * @param  string  $name
      * @param  array   $parameters

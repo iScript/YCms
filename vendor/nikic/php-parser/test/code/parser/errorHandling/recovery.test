@@ -10,6 +10,33 @@ Syntax error, unexpected T_STRING from 4:1 to 4:3
 Syntax error, unexpected T_STRING from 5:1 to 5:3
 Syntax error, unexpected EOF from 5:6 to 5:6
 array(
+    0: Expr_FuncCall(
+        name: Name(
+            parts: array(
+                0: foo
+            )
+        )
+        args: array(
+        )
+    )
+    1: Expr_FuncCall(
+        name: Name(
+            parts: array(
+                0: bar
+            )
+        )
+        args: array(
+        )
+    )
+    2: Expr_FuncCall(
+        name: Name(
+            parts: array(
+                0: baz
+            )
+        )
+        args: array(
+        )
+    )
 )
 -----
 <?php
@@ -23,13 +50,22 @@ array(
     0: Expr_FuncCall(
         name: Name(
             parts: array(
-                0: bar
+                0: foo
             )
         )
         args: array(
         )
     )
     1: Expr_FuncCall(
+        name: Name(
+            parts: array(
+                0: bar
+            )
+        )
+        args: array(
+        )
+    )
+    2: Expr_FuncCall(
         name: Name(
             parts: array(
                 0: baz
@@ -60,6 +96,15 @@ array(
     1: Expr_FuncCall(
         name: Name(
             parts: array(
+                0: bar
+            )
+        )
+        args: array(
+        )
+    )
+    2: Expr_FuncCall(
+        name: Name(
+            parts: array(
                 0: baz
             )
         )
@@ -81,6 +126,9 @@ array(
             )
         )
     )
+    1: Scalar_LNumber(
+        value: 1
+    )
 )
 -----
 <?php
@@ -97,6 +145,9 @@ array(
         )
         returnType: null
         stmts: array(
+            0: Scalar_LNumber(
+                value: 1
+            )
         )
     )
 )
@@ -189,3 +240,136 @@ while (true) {
     $i = 2;
 -----
 Syntax error, unexpected EOF from 8:12 to 8:12
+-----
+<?php
+$foo->
+;
+-----
+!!positions
+Syntax error, unexpected ';', expecting T_STRING or T_VARIABLE or '{' or '$' from 3:1 to 3:1
+array(
+    0: Expr_PropertyFetch[2:1 - 3:1](
+        var: Expr_Variable[2:1 - 2:4](
+            name: foo
+        )
+        name: Expr_Error[3:1 - 3:1](
+        )
+    )
+)
+-----
+<?php
+function foo() {
+    $bar->
+}
+-----
+!!positions
+Syntax error, unexpected '}', expecting T_STRING or T_VARIABLE or '{' or '$' from 4:1 to 4:1
+array(
+    0: Stmt_Function[2:1 - 4:1](
+        byRef: false
+        name: foo
+        params: array(
+        )
+        returnType: null
+        stmts: array(
+            0: Expr_PropertyFetch[3:5 - 4:1](
+                var: Expr_Variable[3:5 - 3:8](
+                    name: bar
+                )
+                name: Expr_Error[4:1 - 4:1](
+                )
+            )
+        )
+    )
+)
+-----
+<?php
+new T
+-----
+Syntax error, unexpected EOF from 2:6 to 2:6
+array(
+    0: Expr_New(
+        class: Name(
+            parts: array(
+                0: T
+            )
+        )
+        args: array(
+        )
+    )
+)
+-----
+<?php
+new
+-----
+!!php7,positions
+Syntax error, unexpected EOF from 2:4 to 2:4
+array(
+    0: Expr_New[2:1 - 2:4](
+        class: Expr_Error[2:4 - 2:4](
+        )
+        args: array(
+        )
+    )
+)
+-----
+<?php
+$foo instanceof
+-----
+!!php7
+Syntax error, unexpected EOF from 2:16 to 2:16
+array(
+    0: Expr_Instanceof(
+        expr: Expr_Variable(
+            name: foo
+        )
+        class: Expr_Error(
+        )
+    )
+)
+-----
+<?php
+$
+-----
+!!php7
+Syntax error, unexpected EOF, expecting T_VARIABLE or '{' or '$' from 2:2 to 2:2
+array(
+    0: Expr_Variable(
+        name: Expr_Error(
+        )
+    )
+)
+-----
+<?php
+Foo::$
+-----
+!!php7
+Syntax error, unexpected EOF, expecting T_VARIABLE or '{' or '$' from 2:7 to 2:7
+array(
+    0: Expr_StaticPropertyFetch(
+        class: Name(
+            parts: array(
+                0: Foo
+            )
+        )
+        name: Expr_Error(
+        )
+    )
+)
+-----
+<?php
+Foo::
+-----
+!!php7
+Syntax error, unexpected EOF from 2:6 to 2:6
+array(
+    0: Expr_ClassConstFetch(
+        class: Name(
+            parts: array(
+                0: Foo
+            )
+        )
+        name: Expr_Error(
+        )
+    )
+)

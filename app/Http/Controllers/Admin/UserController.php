@@ -3,73 +3,32 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\User;
-use App\Http\Requests\RegisterRequest;
 use App\Http\Controllers\Controller;
-use App\Models\Role;
+use App\Models\User;
 use App\Repositories\UserRepository;
 
 class UserController extends Controller
 {
 
+    private $userRepository;
 
-    protected $userRepository;
-
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository )
     {
-        //parent::__construct();
-
-        $this->userRepository = $userRepository;
-        view()->share('roles', Role::all());    // 共享视图
-
-
+        $this->userRepository  = $userRepository;
     }
-
-
-
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
 
+        $users = $this->userRepository->index($request->all());
 
-//        $user = $this->userRepository->getById(1);
-//        var_dump($user);
-
-        $users = User::paginate(10);
         return view('admin.user.index')->with("users",$users);
     }
-
-
-
-
-    /**
-     * User create.
-     *
-     * @return View
-     */
-    public function create()
-    {
-        return view('admin.user.create');
-    }
-
-
-
-    public function store(RegisterRequest $request)
-    {
-        $input = $request->all();
-
-        //print_r($input);
-
-        $this->createUser($input);
-        return redirect("admin/user");
-
-    }
-
 
     /**
      * Show the form for editing the specified resource.
@@ -117,58 +76,6 @@ class UserController extends Controller
 //        return response()->json(["code"=>400,"message"=>"删除失败","data"=>[]]);
 
     }
-
-
-
-    protected function createUser(array $data)
-    {
-        $email = ($data['register_type'] == 1 )  ? $data['account'] : null;
-        $mobile = ($data['register_type'] == 2)  ? $data['account'] : null;
-
-        //var_dump($email);exit;
-        $user =  User::create([
-           // 'username' => $data['username'],
-            'email' => $email,
-            'mobile' => $mobile,
-            'password' => password_crypt($data['password']),
-            "register_time" => date("Y-m-d H:i:s",time()),
-            "register_type" => $data['register_type'],
-            "last_login_time"=> date("Y-m-d H:i:s",time()),
-
-        ]);
-
-        if(!empty($data["role_id"])){
-            $user->roles()->detach();
-            $user->attachRole($data["role_id"]);
-
-        }
-
-        return $user;
-    }
-
-    protected function updateUser(User $user ,array $data)
-    {
-
-        if($data["password"] == ""){
-            unset($data["password"]);
-        }else{
-            $data["password"] = password_crypt($data['password']);
-
-        }
-
-        $user->update($data);
-
-        if(isset($data["role_id"])){
-            $user->roles()->detach();
-            if($data["role_id"] != "0"){
-                $user->attachRole($data["role_id"]);
-            }
-        }
-
-        return $user;
-    }
-
-
 
 
 }

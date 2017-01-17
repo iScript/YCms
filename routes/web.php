@@ -13,39 +13,24 @@
 
 Route::get('/', ["uses"=>'HomeController@index','middleware'=>'throttle:60']);
 
-
-/**
- * Frontend Access Controllers
- */
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/logout', 'AuthController@getLogout');
     Route::get('/password/change', 'PasswordController@getChangePassword');
 
-	Route::get('/my','UserController@index');
+    Route::get('/my','UserController@index');
 
 });
+
 
 Route::group(['middleware' => 'guest'], function () use ($router) {
-	Route::get("/login","AuthController@getLogin");
-	Route::post("/login","AuthController@postLogin");
-	Route::get("/register","AuthController@getRegister");
-	Route::post("/register","AuthController@postRegister");
-
-	Route::post("/verify_code","AuthController@verify_code");
+//    Route::get("/login","AuthController@getLogin");
+//    Route::post("/login","AuthController@postLogin");
+//    Route::get("/register","AuthController@getRegister");
+//    Route::post("/register","AuthController@postRegister");
+//
+//    Route::post("/verify_code","AuthController@verify_code");
 });
 
-
-
-Route::get("/article/{id}","ArticleController@show");
-
-
-
-
-//Route::post("upload","QiniuController@simditor_upload");
-Route::get("qiniu/token","QiniuController@token");
-
-//Route::get("/captchaform" ,['as' => 'captchaform', 'uses' => 'GeeController@index']);
-Route::get("/captcha" ,['as' => 'captcha', 'uses' => 'GeeController@captcha']);
 
 
 

@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\Permission;
+use App\Http\Requests\RoleRequest;
 
 class RoleController extends Controller
 {
@@ -39,7 +40,7 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      * author 袁克强
      */
-    public function store(Request $request)
+    public function store(RoleRequest $request)
     {
         Role::create($request->all());
         return redirect("admin/role");
@@ -108,13 +109,14 @@ class RoleController extends Controller
 
         //$permissions = $this->permission->topPermissions();
 
-        $rolePermissions = $role->perms()->get(); //当前角色拥有的权限
+        $rolePermissions = $role->permissions()->get(); //当前角色拥有的权限
+
         $rolePerms = [];
         foreach ($rolePermissions as $item) {
+           //echo 33;;exit;
             $rolePerms[] = $item->name;
         }
 
-        //print_r($rolePermissions);
 
         $permissions = Permission::all();
         $p = array();
@@ -135,9 +137,9 @@ class RoleController extends Controller
     public function storePermissions($id,Request $request)
     {
         $permissions = $request->input('permissions', []);
-        Role::find($id)->perms()->sync($permissions);
+        //var_dump($permissions);exit;
+        Role::find($id)->permissions()->sync($permissions);
 
-        //print_r($permissions);
         return redirect("admin/role/".$id."/permissions");
     }
 }

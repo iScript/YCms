@@ -10,14 +10,13 @@
 
         "predis/predis" :  "*",
         "qiniu/php-sdk": "*",
-        "zizaco/entrust": "*",
-        "guzzlehttp/guzzle": "~6.0",
-        "lcobucci/jwt": "^3.1"
+        "guzzlehttp/guzzle": "~6.0"
+
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^2.2",
         "barryvdh/laravel-ide-helper": "*",
-        
+
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~5.0",
@@ -27,9 +26,6 @@
     "autoload": {
         "classmap": [
             "database"
-        ],
-        "files":[
-            "app/Helpers/functions.php"
         ],
         "psr-4": {
             "App\\": "app/"

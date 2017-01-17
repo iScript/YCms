@@ -26,9 +26,9 @@
         "mtdowling/cron-expression": "~1.0",
         "nesbot/carbon": "~1.20",
         "paragonie/random_compat": "~1.4|~2.0",
-        "psy/psysh": "0.7.*",
+        "psy/psysh": "0.7.*|0.8.*",
         "ramsey/uuid": "~3.0",
-        "swiftmailer/swiftmailer": "~5.1",
+        "swiftmailer/swiftmailer": "~5.4",
         "symfony/console": "3.1.*",
         "symfony/debug": "3.1.*",
         "symfony/finder": "3.1.*",
@@ -59,6 +59,7 @@
         "illuminate/http": "self.version",
         "illuminate/log": "self.version",
         "illuminate/mail": "self.version",
+        "illuminate/notifications": "self.version",
         "illuminate/pagination": "self.version",
         "illuminate/pipeline": "self.version",
         "illuminate/queue": "self.version",
@@ -106,7 +107,10 @@
         "pusher/pusher-php-server": "Required to use the Pusher broadcast driver (~2.0).",
         "symfony/css-selector": "Required to use some of the crawler integration testing tools (3.1.*).",
         "symfony/dom-crawler": "Required to use most of the crawler integration testing tools (3.1.*).",
-        "symfony/psr-http-message-bridge": "Required to psr7 bridging features (0.2.*)."
+        "symfony/psr-http-message-bridge": "Required to use psr7 bridging features (0.2.*)."
+    },
+    "config": {
+        "sort-packages": true
     },
     "minimum-stability": "dev"
 }

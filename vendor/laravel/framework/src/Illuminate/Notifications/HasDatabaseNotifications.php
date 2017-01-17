@@ -14,12 +14,20 @@ trait HasDatabaseNotifications
     }
 
     /**
+     * Get the entity's read notifications.
+     */
+    public function readNotifications()
+    {
+        return $this->notifications()
+                            ->whereNotNull('read_at');
+    }
+
+    /**
      * Get the entity's unread notifications.
      */
     public function unreadNotifications()
     {
-        return $this->morphMany(DatabaseNotification::class, 'notifiable')
-                            ->whereNull('read_at')
-                            ->orderBy('created_at', 'desc');
+        return $this->notifications()
+                            ->whereNull('read_at');
     }
 }

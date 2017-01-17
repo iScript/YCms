@@ -345,6 +345,17 @@ class Event
     }
 
     /**
+     * Schedule the event to run hourly at a given offset in the hour.
+     *
+     * @param  int  $offset
+     * @return $this
+     */
+    public function hourlyAt($offset)
+    {
+        return $this->spliceIntoPosition(1, $offset);
+    }
+
+    /**
      * Schedule the event to run daily.
      *
      * @return $this
@@ -607,6 +618,46 @@ class Event
     }
 
     /**
+     * Schedule the event to run between start and end time.
+     *
+     * @param  string  $startTime
+     * @param  string  $endTime
+     * @return $this
+     */
+    public function between($startTime, $endTime)
+    {
+        return $this->when($this->inTimeInterval($startTime, $endTime));
+    }
+
+    /**
+     * Schedule the event to not run between start and end time.
+     *
+     * @param  string  $startTime
+     * @param  string  $endTime
+     * @return $this
+     */
+    public function unlessBetween($startTime, $endTime)
+    {
+        return $this->skip($this->inTimeInterval($startTime, $endTime));
+    }
+
+    /**
+     * Schedule the event to run between start and end time.
+     *
+     * @param  string  $startTime
+     * @param  string  $endTime
+     * @return \Closure
+     */
+    private function inTimeInterval($startTime, $endTime)
+    {
+        return function () use ($startTime, $endTime) {
+            $now = Carbon::now()->getTimestamp();
+
+            return $now >= strtotime($startTime) && $now <= strtotime($endTime);
+        };
+    }
+
+    /**
      * State that the command should run in background.
      *
      * @return $this
@@ -804,7 +855,7 @@ class Event
     protected function getEmailSubject()
     {
         if ($this->description) {
-            return 'Scheduled Job Output ('.$this->description.')';
+            return $this->description;
         }
 
         return 'Scheduled Job Output';

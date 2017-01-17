@@ -13,8 +13,8 @@ use League\Flysystem\FilesystemInterface;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Adapter\Local as LocalAdapter;
-use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 use Illuminate\Contracts\Filesystem\Cloud as CloudFilesystemContract;
+use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 use Illuminate\Contracts\Filesystem\FileNotFoundException as ContractFileNotFoundException;
 
 class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
@@ -198,15 +198,19 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
     {
         $paths = is_array($paths) ? $paths : func_get_args();
 
+        $success = true;
+
         foreach ($paths as $path) {
             try {
-                $this->driver->delete($path);
+                if (! $this->driver->delete($path)) {
+                    $success = false;
+                }
             } catch (FileNotFoundException $e) {
-                //
+                $success = false;
             }
         }
 
-        return true;
+        return $success;
     }
 
     /**
@@ -276,16 +280,23 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
     {
         $adapter = $this->driver->getAdapter();
 
-        if ($adapter instanceof AwsS3Adapter) {
+        if (method_exists($adapter, 'getUrl')) {
+            return $adapter->getUrl($path);
+        } elseif ($adapter instanceof AwsS3Adapter) {
             $path = $adapter->getPathPrefix().$path;
 
             return $adapter->getClient()->getObjectUrl($adapter->getBucket(), $path);
         } elseif ($adapter instanceof LocalAdapter) {
+            $config = $this->driver->getConfig();
+
+            if ($config->has('url')) {
+                return $config->get('url').'/'.$path;
+            }
+
             $path = '/storage/'.$path;
 
-            return Str::contains($path, '/storage/public') ? Str::replaceFirst('/public', '', $path) : $path;
-        } elseif (method_exists($adapter, 'getUrl')) {
-            return $adapter->getUrl($path);
+            return Str::contains($path, '/storage/public/') ?
+                        Str::replaceFirst('/public/', '/', $path) : $path;
         } else {
             throw new RuntimeException('This driver does not support retrieving URLs.');
         }

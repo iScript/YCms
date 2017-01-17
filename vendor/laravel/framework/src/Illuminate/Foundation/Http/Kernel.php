@@ -7,8 +7,8 @@ use Throwable;
 use Illuminate\Routing\Router;
 use Illuminate\Routing\Pipeline;
 use Illuminate\Support\Facades\Facade;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Http\Kernel as KernelContract;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
 
@@ -75,6 +75,7 @@ class Kernel implements KernelContract
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \Illuminate\Auth\Middleware\Authenticate::class,
+        \Illuminate\Session\Middleware\AuthenticateSession::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
     ];
@@ -164,6 +165,10 @@ class Kernel implements KernelContract
         );
 
         foreach ($middlewares as $middleware) {
+            if (! is_string($middleware)) {
+                continue;
+            }
+
             list($name, $parameters) = $this->parseMiddleware($middleware);
 
             $instance = $this->app->make($name);

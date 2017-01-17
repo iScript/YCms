@@ -34,7 +34,7 @@ class SyncQueue extends Queue implements QueueContract
      */
     public function push($job, $data = '', $queue = null)
     {
-        $queueJob = $this->resolveJob($this->createPayload($job, $data, $queue));
+        $queueJob = $this->resolveJob($this->createPayload($job, $data, $queue), $queue);
 
         try {
             $this->raiseBeforeJobEvent($queueJob);
@@ -52,11 +52,13 @@ class SyncQueue extends Queue implements QueueContract
     }
 
     /**
-     * Handle an exception that occured while processing a job.
+     * Handle an exception that occurred while processing a job.
      *
      * @param  \Illuminate\Queue\Jobs\Job  $queueJob
      * @param  \Exception  $e
      * @return void
+     *
+     * @throws \Exception
      */
     protected function handleSyncException($queueJob, $e)
     {
@@ -109,11 +111,12 @@ class SyncQueue extends Queue implements QueueContract
      * Resolve a Sync job instance.
      *
      * @param  string  $payload
+     * @param  string  $queue
      * @return \Illuminate\Queue\Jobs\SyncJob
      */
-    protected function resolveJob($payload)
+    protected function resolveJob($payload, $queue)
     {
-        return new SyncJob($this->container, $payload);
+        return new SyncJob($this->container, $payload, $queue);
     }
 
     /**

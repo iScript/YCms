@@ -317,6 +317,16 @@ class Blueprint
     }
 
     /**
+     * Indicate that the soft delete column should be dropped.
+     *
+     * @return void
+     */
+    public function dropSoftDeletesTz()
+    {
+        $this->dropSoftDeletes();
+    }
+
+    /**
      * Indicate that the remember token column should be dropped.
      *
      * @return void
@@ -822,6 +832,16 @@ class Blueprint
     }
 
     /**
+     * Add a "deleted at" timestampTz for the table.
+     *
+     * @return \Illuminate\Support\Fluent
+     */
+    public function softDeletesTz()
+    {
+        return $this->timestampTz('deleted_at')->nullable();
+    }
+
+    /**
      * Create a new binary column on the table.
      *
      * @param  string  $column
@@ -877,6 +897,22 @@ class Blueprint
         $this->unsignedInteger("{$name}_id");
 
         $this->string("{$name}_type");
+
+        $this->index(["{$name}_id", "{$name}_type"], $indexName);
+    }
+
+    /**
+     * Add nullable columns for a polymorphic table.
+     *
+     * @param  string  $name
+     * @param  string|null  $indexName
+     * @return void
+     */
+    public function nullableMorphs($name, $indexName = null)
+    {
+        $this->unsignedInteger("{$name}_id")->nullable();
+
+        $this->string("{$name}_type")->nullable();
 
         $this->index(["{$name}_id", "{$name}_type"], $indexName);
     }

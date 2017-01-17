@@ -26,10 +26,12 @@ class SyncJob extends Job implements JobContract
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  string  $payload
+     * @param  string  $queue
      * @return void
      */
-    public function __construct(Container $container, $payload)
+    public function __construct(Container $container, $payload, $queue)
     {
+        $this->queue = $queue;
         $this->payload = $payload;
         $this->container = $container;
     }
@@ -73,5 +75,15 @@ class SyncJob extends Job implements JobContract
     public function getJobId()
     {
         return '';
+    }
+
+    /**
+     * Get the name of the queue the job belongs to.
+     *
+     * @return string
+     */
+    public function getQueue()
+    {
+        return 'sync';
     }
 }

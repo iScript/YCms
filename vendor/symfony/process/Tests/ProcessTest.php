@@ -747,6 +747,27 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
         throw $e;
     }
 
+    /**
+     * @expectedException \Symfony\Component\Process\Exception\ProcessTimedOutException
+     * @expectedExceptionMessage exceeded the timeout of 0.1 seconds.
+     */
+    public function testIterateOverProcessWithTimeout()
+    {
+        $process = $this->getProcess(self::$phpBin.' -r "sleep(30);"');
+        $process->setTimeout(0.1);
+        $start = microtime(true);
+        try {
+            $process->start();
+            foreach ($process as $buffer);
+            $this->fail('A RuntimeException should have been raised');
+        } catch (RuntimeException $e) {
+        }
+
+        $this->assertLessThan(15, microtime(true) - $start);
+
+        throw $e;
+    }
+
     public function testCheckTimeoutOnNonStartedProcess()
     {
         $process = $this->getProcess('echo foo');
@@ -939,7 +960,7 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider provideMethodsThatNeedATerminatedProcess
-     * @expectedException Symfony\Component\Process\Exception\LogicException
+     * @expectedException \Symfony\Component\Process\Exception\LogicException
      * @expectedExceptionMessage Process must be terminated before calling
      */
     public function testMethodsThatNeedATerminatedProcess($method)

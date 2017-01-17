@@ -21,7 +21,7 @@ trait SendsPasswordResetEmails
      * Send a reset link to the given user.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function sendResetLinkEmail(Request $request)
     {
@@ -31,29 +31,37 @@ trait SendsPasswordResetEmails
         // to send the link, we will examine the response then see the message we
         // need to show to the user. Finally, we'll send out a proper response.
         $response = $this->broker()->sendResetLink(
-            $request->only('email'), $this->resetNotifier()
+            $request->only('email')
         );
 
-        if ($response === Password::RESET_LINK_SENT) {
-            return back()->with('status', trans($response));
-        }
-
-        // If an error was returned by the password broker, we will get this message
-        // translated so we can notify a user of the problem. We'll redirect back
-        // to where the users came from so they can attempt this process again.
-        return back()->withErrors(
-            ['email' => trans($response)]
-        );
+        return $response == Password::RESET_LINK_SENT
+                    ? $this->sendResetLinkResponse($response)
+                    : $this->sendResetLinkFailedResponse($request, $response);
     }
 
     /**
-     * Get the Closure which is used to build the password reset notification.
+     * Get the response for a successful password reset link.
      *
-     * @return \Closure
+     * @param  string  $response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    protected function resetNotifier()
+    protected function sendResetLinkResponse($response)
     {
-        //
+        return back()->with('status', trans($response));
+    }
+
+    /**
+     * Get the response for a failed password reset link.
+     *
+     * @param  \Illuminate\Http\Request
+     * @param  string  $response
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function sendResetLinkFailedResponse(Request $request, $response)
+    {
+        return back()->withErrors(
+            ['email' => trans($response)]
+        );
     }
 
     /**

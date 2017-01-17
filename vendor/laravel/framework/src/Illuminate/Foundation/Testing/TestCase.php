@@ -6,6 +6,7 @@ use Mockery;
 use PHPUnit_Framework_TestCase;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Console\Application as Artisan;
 
 abstract class TestCase extends PHPUnit_Framework_TestCase
 {
@@ -146,6 +147,8 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 
         $this->afterApplicationCreatedCallbacks = [];
         $this->beforeApplicationDestroyedCallbacks = [];
+
+        Artisan::forgetBootstrappers();
     }
 
     /**
@@ -154,7 +157,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
      * @param  callable  $callback
      * @return void
      */
-    protected function afterApplicationCreated(callable $callback)
+    public function afterApplicationCreated(callable $callback)
     {
         $this->afterApplicationCreatedCallbacks[] = $callback;
 

@@ -202,8 +202,6 @@ class Command
      *
      * @return int The command exit code
      *
-     * @throws \Exception
-     *
      * @see setCode()
      * @see execute()
      */
@@ -572,6 +570,8 @@ class Command
      * Add a command usage example.
      *
      * @param string $usage The usage, it'll be prefixed with the command name
+     *
+     * @return Command The current instance
      */
     public function addUsage($usage)
     {

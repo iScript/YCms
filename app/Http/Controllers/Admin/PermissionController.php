@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Permission;
-
+use App\Http\Requests\PermissionRequest;
 
 class PermissionController extends Controller
 {
@@ -38,7 +38,7 @@ class PermissionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PermissionRequest $request)
     {
         Permission::create($request->all());
         return redirect("admin/permission");

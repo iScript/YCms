@@ -2,6 +2,7 @@
 
 namespace Illuminate\Translation;
 
+use Countable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
@@ -128,6 +129,23 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
     }
 
     /**
+     * Add translation lines to the given locale.
+     *
+     * @param  array  $lines
+     * @param  string  $locale
+     * @param  string  $namespace
+     * @return void
+     */
+    public function addLines(array $lines, $locale, $namespace = '*')
+    {
+        foreach ($lines as $key => $value) {
+            list($group, $item) = explode('.', $key, 2);
+
+            Arr::set($this->loaded, "$namespace.$group.$locale.$item", $value);
+        }
+    }
+
+    /**
      * Retrieve a language line out the loaded array.
      *
      * @param  string  $namespace
@@ -180,7 +198,7 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
     {
         return (new Collection($replace))->sortBy(function ($value, $key) {
             return mb_strlen($key) * -1;
-        });
+        })->all();
     }
 
     /**
@@ -196,7 +214,7 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface
     {
         $line = $this->get($key, $replace, $locale = $locale ?: $this->locale ?: $this->fallback);
 
-        if (is_array($number) || $number instanceof \Countable) {
+        if (is_array($number) || $number instanceof Countable) {
             $number = count($number);
         }
 
