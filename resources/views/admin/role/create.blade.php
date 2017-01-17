@@ -31,7 +31,7 @@
             <div class="box-body">
                 <div class="form-group">
                     <label for="">标示</label>
-                    <input type="text" class="form-control" name="name" id="" placeholder="权限标示">
+                    <input type="text" class="form-control" name="name" id="" placeholder="角色标示">
                 </div>
                 <div class="form-group">
                     <label for="">名称</label>
