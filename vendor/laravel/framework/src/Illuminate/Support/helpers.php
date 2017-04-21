@@ -302,6 +302,19 @@ if (! function_exists('array_where')) {
     }
 }
 
+if (! function_exists('array_wrap')) {
+    /**
+     * If the given value is not an array, wrap it in one.
+     *
+     * @param  mixed  $value
+     * @return array
+     */
+    function array_wrap($value)
+    {
+        return Arr::wrap($value);
+    }
+}
+
 if (! function_exists('camel_case')) {
     /**
      * Convert a value to camel case.
@@ -493,11 +506,11 @@ if (! function_exists('dd')) {
      * @param  mixed
      * @return void
      */
-    function dd()
+    function dd(...$args)
     {
-        array_map(function ($x) {
+        foreach ($args as $x) {
             (new Dumper)->dump($x);
-        }, func_get_args());
+        }
 
         die(1);
     }
@@ -544,6 +557,19 @@ if (! function_exists('head')) {
     function head($array)
     {
         return reset($array);
+    }
+}
+
+if (! function_exists('kebab_case')) {
+    /**
+     * Convert a string to kebab case.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    function kebab_case($value)
+    {
+        return Str::kebab($value);
     }
 }
 
@@ -603,6 +629,40 @@ if (! function_exists('preg_replace_array')) {
                 return array_shift($replacements);
             }
         }, $subject);
+    }
+}
+
+if (! function_exists('retry')) {
+    /**
+     * Retry an operation a given number of times.
+     *
+     * @param  int  $times
+     * @param  callable  $callback
+     * @param  int  $sleep
+     * @return mixed
+     *
+     * @throws \Exception
+     */
+    function retry($times, callable $callback, $sleep = 0)
+    {
+        $times--;
+
+        beginning:
+        try {
+            return $callback();
+        } catch (Exception $e) {
+            if (! $times) {
+                throw $e;
+            }
+
+            $times--;
+
+            if ($sleep) {
+                usleep($sleep * 1000);
+            }
+
+            goto beginning;
+        }
     }
 }
 

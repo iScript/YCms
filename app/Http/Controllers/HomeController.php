@@ -20,11 +20,9 @@ class HomeController extends Controller
         //\Auth::
         //echo 22;
 
-       // Auth::loginUsingId(1);
+        // Auth::loginUsingId(1);
 
-
-
-        return response()->view("welcome");;
+        return response()->view("welcome");
 
     }
 }

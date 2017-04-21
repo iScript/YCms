@@ -16,3 +16,15 @@ use Illuminate\Http\Request;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
+
+Route::options('{all}',function(){
+    exit;
+});
+Route::group(['middleware' => ["enable.cors:*"]], function () {
+
+    Route::get("test","Api\TestController@index");
+    Route::get("test2","Api\TestController@index2");
+    Route::post("test2","Api\TestController@index2");
+    Route::put("test2","Api\TestController@index2");
+});
+

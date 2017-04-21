@@ -12,6 +12,7 @@
 */
 
 // https://github.com/fzaninotto/Faker
+ini_set('memory_limit', '7256M');
 
 $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     $faker = Faker\Factory::create('zh_CN');
@@ -22,7 +23,7 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
         'username' => $faker->name,
         'nickname' => $faker->name,
         'mobile' =>  $faker->phoneNumber,
-        'email' => $faker->unique(true)->email,
+        'email' => uniqid("",true).$faker->email,
         'register_time' => $faker->dateTime(),
         'last_login_time' => $faker->dateTime(),
         'last_login_ip' => $faker->ipv4,
