@@ -1,15 +1,19 @@
 <?php
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\HtmlString;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Foundation\Bus\PendingDispatch;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Contracts\Cookie\Factory as CookieFactory;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Illuminate\Database\Eloquent\Factory as EloquentFactory;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Contracts\Broadcasting\Factory as BroadcastFactory;
@@ -228,18 +232,22 @@ if (! function_exists('cache')) {
         }
 
         if (is_string($arguments[0])) {
-            return app('cache')->get($arguments[0], isset($arguments[1]) ? $arguments[1] : null);
+            return app('cache')->get($arguments[0], $arguments[1] ?? null);
         }
 
-        if (is_array($arguments[0])) {
-            if (! isset($arguments[1])) {
-                throw new Exception(
-                    'You must set an expiration time when putting to the cache.'
-                );
-            }
-
-            return app('cache')->put(key($arguments[0]), reset($arguments[0]), $arguments[1]);
+        if (! is_array($arguments[0])) {
+            throw new Exception(
+                'When setting a value in the cache, you must pass an array of key / value pairs.'
+            );
         }
+
+        if (! isset($arguments[1])) {
+            throw new Exception(
+                'You must specify an expiration time when setting a value in the cache.'
+            );
+        }
+
+        return app('cache')->put(key($arguments[0]), reset($arguments[0]), $arguments[1]);
     }
 }
 
@@ -368,11 +376,25 @@ if (! function_exists('dispatch')) {
      * Dispatch a job to its appropriate handler.
      *
      * @param  mixed  $job
-     * @return mixed
+     * @return \Illuminate\Foundation\Bus\PendingDispatch
      */
     function dispatch($job)
     {
-        return app(Dispatcher::class)->dispatch($job);
+        return new PendingDispatch($job);
+    }
+}
+
+if (! function_exists('dispatch_now')) {
+    /**
+     * Dispatch a command to its appropriate handler in the current process.
+     *
+     * @param  mixed  $job
+     * @param  mixed  $handler
+     * @return mixed
+     */
+    function dispatch_now($job, $handler = null)
+    {
+        return app(Dispatcher::class)->dispatchNow($job, $handler);
     }
 }
 
@@ -420,51 +442,12 @@ if (! function_exists('encrypt')) {
     /**
      * Encrypt the given value.
      *
-     * @param  string  $value
+     * @param  mixed  $value
      * @return string
      */
     function encrypt($value)
     {
         return app('encrypter')->encrypt($value);
-    }
-}
-
-if (! function_exists('env')) {
-    /**
-     * Gets the value of an environment variable.
-     *
-     * @param  string  $key
-     * @param  mixed   $default
-     * @return mixed
-     */
-    function env($key, $default = null)
-    {
-        $value = getenv($key);
-
-        if ($value === false) {
-            return value($default);
-        }
-
-        switch (strtolower($value)) {
-            case 'true':
-            case '(true)':
-                return true;
-            case 'false':
-            case '(false)':
-                return false;
-            case 'empty':
-            case '(empty)':
-                return '';
-            case 'null':
-            case '(null)':
-                return;
-        }
-
-        if (strlen($value) > 1 && Str::startsWith($value, '"') && Str::endsWith($value, '"')) {
-            return substr($value, 1, -1);
-        }
-
-        return $value;
     }
 }
 
@@ -497,7 +480,7 @@ if (! function_exists('factory')) {
         $arguments = func_get_args();
 
         if (isset($arguments[1]) && is_string($arguments[1])) {
-            return $factory->of($arguments[0], $arguments[1])->times(isset($arguments[2]) ? $arguments[2] : null);
+            return $factory->of($arguments[0], $arguments[1])->times($arguments[2] ?? null);
         } elseif (isset($arguments[1])) {
             return $factory->of($arguments[0])->times($arguments[1]);
         } else {
@@ -516,7 +499,7 @@ if (! function_exists('info')) {
      */
     function info($message, $context = [])
     {
-        return app('log')->info($message, $context);
+        app('log')->info($message, $context);
     }
 }
 
@@ -563,36 +546,54 @@ if (! function_exists('mix')) {
      */
     function mix($path, $manifestDirectory = '')
     {
-        static $manifest;
+        static $manifests = [];
 
-        if (! starts_with($path, '/')) {
+        if (! Str::startsWith($path, '/')) {
             $path = "/{$path}";
         }
 
-        if ($manifestDirectory && ! starts_with($manifestDirectory, '/')) {
+        if ($manifestDirectory && ! Str::startsWith($manifestDirectory, '/')) {
             $manifestDirectory = "/{$manifestDirectory}";
         }
 
         if (file_exists(public_path($manifestDirectory.'/hot'))) {
-            return new HtmlString("http://localhost:8080{$path}");
+            return new HtmlString("//localhost:8080{$path}");
         }
 
-        if (! $manifest) {
-            if (! file_exists($manifestPath = public_path($manifestDirectory.'/mix-manifest.json'))) {
+        $manifestPath = public_path($manifestDirectory.'/mix-manifest.json');
+
+        if (! isset($manifests[$manifestPath])) {
+            if (! file_exists($manifestPath)) {
                 throw new Exception('The Mix manifest does not exist.');
             }
 
-            $manifest = json_decode(file_get_contents($manifestPath), true);
+            $manifests[$manifestPath] = json_decode(file_get_contents($manifestPath), true);
         }
 
-        if (! array_key_exists($path, $manifest)) {
-            throw new Exception(
-                "Unable to locate Mix file: {$path}. Please check your ".
-                'webpack.mix.js output paths and try again.'
-            );
+        $manifest = $manifests[$manifestPath];
+
+        if (! isset($manifest[$path])) {
+            report(new Exception("Unable to locate Mix file: {$path}."));
+
+            if (! app('config')->get('app.debug')) {
+                return $path;
+            }
         }
 
         return new HtmlString($manifestDirectory.$manifest[$path]);
+    }
+}
+
+if (! function_exists('now')) {
+    /**
+     * Create a new Carbon instance for the current time.
+     *
+     * @param  \DateTimeZone|string|null $tz
+     * @return \Illuminate\Support\Carbon
+     */
+    function now($tz = null)
+    {
+        return Carbon::now($tz);
     }
 }
 
@@ -634,7 +635,7 @@ if (! function_exists('public_path')) {
      */
     function public_path($path = '')
     {
-        return app()->make('path.public').($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return app()->make('path.public').($path ? DIRECTORY_SEPARATOR.ltrim($path, DIRECTORY_SEPARATOR) : $path);
     }
 }
 
@@ -658,6 +659,24 @@ if (! function_exists('redirect')) {
     }
 }
 
+if (! function_exists('report')) {
+    /**
+     * Report an exception.
+     *
+     * @param  \Exception  $exception
+     * @return void
+     */
+    function report($exception)
+    {
+        if ($exception instanceof Throwable &&
+            ! $exception instanceof Exception) {
+            $exception = new FatalThrowableError($exception);
+        }
+
+        app(ExceptionHandler::class)->report($exception);
+    }
+}
+
 if (! function_exists('request')) {
     /**
      * Get an instance of the current request or an input item from the request.
@@ -676,7 +695,29 @@ if (! function_exists('request')) {
             return app('request')->only($key);
         }
 
-        return data_get(app('request')->all(), $key, $default);
+        $value = app('request')->__get($key);
+
+        return is_null($value) ? value($default) : $value;
+    }
+}
+
+if (! function_exists('rescue')) {
+    /**
+     * Catch a potential exception and return a default value.
+     *
+     * @param  callable  $callback
+     * @param  mixed  $rescue
+     * @return mixed
+     */
+    function rescue(callable $callback, $rescue = null)
+    {
+        try {
+            return $callback();
+        } catch (Throwable $e) {
+            report($e);
+
+            return value($rescue);
+        }
     }
 }
 
@@ -806,22 +847,35 @@ if (! function_exists('storage_path')) {
     }
 }
 
+if (! function_exists('today')) {
+    /**
+     * Create a new Carbon instance for the current date.
+     *
+     * @param  \DateTimeZone|string|null $tz
+     * @return \Illuminate\Support\Carbon
+     */
+    function today($tz = null)
+    {
+        return Carbon::today($tz);
+    }
+}
+
 if (! function_exists('trans')) {
     /**
      * Translate the given message.
      *
-     * @param  string  $id
+     * @param  string  $key
      * @param  array   $replace
      * @param  string  $locale
-     * @return \Illuminate\Contracts\Translation\Translator|string
+     * @return \Illuminate\Contracts\Translation\Translator|string|array|null
      */
-    function trans($id = null, $replace = [], $locale = null)
+    function trans($key = null, $replace = [], $locale = null)
     {
-        if (is_null($id)) {
+        if (is_null($key)) {
             return app('translator');
         }
 
-        return app('translator')->trans($id, $replace, $locale);
+        return app('translator')->trans($key, $replace, $locale);
     }
 }
 
@@ -829,15 +883,15 @@ if (! function_exists('trans_choice')) {
     /**
      * Translates the given message based on a count.
      *
-     * @param  string  $id
+     * @param  string  $key
      * @param  int|array|\Countable  $number
      * @param  array   $replace
      * @param  string  $locale
      * @return string
      */
-    function trans_choice($id, $number, array $replace = [], $locale = null)
+    function trans_choice($key, $number, array $replace = [], $locale = null)
     {
-        return app('translator')->transChoice($id, $number, $replace, $locale);
+        return app('translator')->transChoice($key, $number, $replace, $locale);
     }
 }
 

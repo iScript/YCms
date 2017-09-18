@@ -2,10 +2,12 @@
 
 namespace Illuminate\Redis;
 
-use Illuminate\Support\Arr;
 use InvalidArgumentException;
 use Illuminate\Contracts\Redis\Factory;
 
+/**
+ * @mixin \Illuminate\Redis\Connections\Connection
+ */
 class RedisManager implements Factory
 {
     /**
@@ -61,14 +63,16 @@ class RedisManager implements Factory
     /**
      * Resolve the given connection by name.
      *
-     * @param  string  $name
+     * @param  string|null  $name
      * @return \Illuminate\Redis\Connections\Connection
      *
      * @throws \InvalidArgumentException
      */
-    protected function resolve($name)
+    public function resolve($name = null)
     {
-        $options = Arr::get($this->config, 'options', []);
+        $name = $name ?: 'default';
+
+        $options = $this->config['options'] ?? [];
 
         if (isset($this->config[$name])) {
             return $this->connector()->connect($this->config[$name], $options);
@@ -91,10 +95,10 @@ class RedisManager implements Factory
      */
     protected function resolveCluster($name)
     {
-        $clusterOptions = Arr::get($this->config, 'clusters.options', []);
+        $clusterOptions = $this->config['clusters']['options'] ?? [];
 
         return $this->connector()->connectToCluster(
-            $this->config['clusters'][$name], $clusterOptions, Arr::get($this->config, 'options', [])
+            $this->config['clusters'][$name], $clusterOptions, $this->config['options'] ?? []
         );
     }
 
@@ -111,6 +115,16 @@ class RedisManager implements Factory
             case 'phpredis':
                 return new Connectors\PhpRedisConnector;
         }
+    }
+
+    /**
+     * Return all of the created connections.
+     *
+     * @return array
+     */
+    public function connections()
+    {
+        return $this->connections;
     }
 
     /**

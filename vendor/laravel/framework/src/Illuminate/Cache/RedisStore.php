@@ -73,7 +73,7 @@ class RedisStore extends TaggableStore implements Store
         }, $keys));
 
         foreach ($values as $index => $value) {
-            $results[$keys[$index]] = $this->unserialize($value);
+            $results[$keys[$index]] = ! is_null($value) ? $this->unserialize($value) : null;
         }
 
         return $results;
@@ -163,6 +163,18 @@ class RedisStore extends TaggableStore implements Store
     public function forever($key, $value)
     {
         $this->connection()->set($this->prefix.$key, $this->serialize($value));
+    }
+
+    /**
+     * Get a lock instance.
+     *
+     * @param  string  $name
+     * @param  int  $seconds
+     * @return \Illuminate\Contracts\Cache\Lock
+     */
+    public function lock($name, $seconds = 0)
+    {
+        return new RedisLock($this->connection(), $this->prefix.$name, $seconds);
     }
 
     /**

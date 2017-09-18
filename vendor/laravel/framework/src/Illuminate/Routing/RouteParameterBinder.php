@@ -57,7 +57,9 @@ class RouteParameterBinder
      */
     protected function bindPathParameters($request)
     {
-        preg_match($this->route->compiled->getRegex(), '/'.$request->decodedPath(), $matches);
+        $path = '/'.ltrim($request->decodedPath(), '/');
+
+        preg_match($this->route->compiled->getRegex(), $path, $matches);
 
         return $this->matchToKeys(array_slice($matches, 1));
     }
@@ -104,7 +106,7 @@ class RouteParameterBinder
     protected function replaceDefaults(array $parameters)
     {
         foreach ($parameters as $key => $value) {
-            $parameters[$key] = isset($value) ? $value : Arr::get($this->route->defaults, $key);
+            $parameters[$key] = $value ?? Arr::get($this->route->defaults, $key);
         }
 
         foreach ($this->route->defaults as $key => $value) {

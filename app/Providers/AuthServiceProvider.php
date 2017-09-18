@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use App\Models\Permission;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -24,11 +23,10 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
         if(!empty($_SERVER['SCRIPT_NAME']) && strtolower($_SERVER['SCRIPT_NAME']) ==='artisan' ){
             return false;
         }
-
+        return;
         $this->registerPolicies();
 
         // 这里还要判断下是否是前台后台，如果是前台就直接返回false，不定义acl

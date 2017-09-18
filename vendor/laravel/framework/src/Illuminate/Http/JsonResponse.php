@@ -57,21 +57,34 @@ class JsonResponse extends BaseJsonResponse
     {
         $this->original = $data;
 
-        if ($data instanceof Arrayable) {
-            $this->data = json_encode($data->toArray(), $this->encodingOptions);
-        } elseif ($data instanceof Jsonable) {
+        if ($data instanceof Jsonable) {
             $this->data = $data->toJson($this->encodingOptions);
         } elseif ($data instanceof JsonSerializable) {
             $this->data = json_encode($data->jsonSerialize(), $this->encodingOptions);
+        } elseif ($data instanceof Arrayable) {
+            $this->data = json_encode($data->toArray(), $this->encodingOptions);
         } else {
             $this->data = json_encode($data, $this->encodingOptions);
         }
 
-        if (JSON_ERROR_NONE !== json_last_error()) {
+        if (! $this->hasValidJson(json_last_error())) {
             throw new InvalidArgumentException(json_last_error_msg());
         }
 
         return $this->update();
+    }
+
+    /**
+     * Determine if an error occurred during JSON encoding.
+     *
+     * @param  int  $jsonError
+     * @return bool
+     */
+    protected function hasValidJson($jsonError)
+    {
+        return $jsonError === JSON_ERROR_NONE ||
+                ($jsonError === JSON_ERROR_UNSUPPORTED_TYPE &&
+                $this->hasEncodingOption(JSON_PARTIAL_OUTPUT_ON_ERROR));
     }
 
     /**
@@ -82,5 +95,16 @@ class JsonResponse extends BaseJsonResponse
         $this->encodingOptions = (int) $options;
 
         return $this->setData($this->getData());
+    }
+
+    /**
+     * Determine if a JSON encoding option is set.
+     *
+     * @param  int  $option
+     * @return bool
+     */
+    public function hasEncodingOption($option)
+    {
+        return (bool) ($this->encodingOptions & $option);
     }
 }
