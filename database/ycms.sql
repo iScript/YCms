@@ -1,8 +1,8 @@
 
 
-create database `xcx-platform` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-use `xcx-platform`;
-set names utf8;
+#create database `xcx-platform` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+#use `xcx-platform`;
+#set names utf8;
 
 
 # 管理员表
@@ -116,15 +116,32 @@ CREATE TABLE `iz_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 
+# 文章表分类
+# ------------------------------------------------------------
+DROP TABLE IF EXISTS `iz_article_category`;
+CREATE TABLE `iz_article_category` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL comment '分类名称',
+  `pid` int(10) unsigned default 0 comment '父id',
+  `image` varchar(100)  NULL comment '分类图片',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 # 文章表
 # ------------------------------------------------------------
 DROP TABLE IF EXISTS `iz_article`;
 CREATE TABLE `iz_article` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(100) NOT NULL comment '文章标题',
+  `description` varchar(300) NOT NULL DEFAULT '' comment '文章概述',
   `content` text NOT NULL comment '文章内容',
   `image` varchar(100)  NULL comment '文章封面',
   `status` tinyint(1) NOT NULL DEFAULT '0' comment '文章状态',
+  `is_top` tinyint(1) NOT NULL DEFAULT '0' comment '是否置顶',
+  `is_hot` tinyint(1) NOT NULL DEFAULT '0' comment '是否热门',
+  `is_rec` tinyint(1) NOT NULL DEFAULT '0' comment '是否推荐',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,

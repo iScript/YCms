@@ -6,15 +6,18 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
+        "barryvdh/laravel-cors": "^0.9.2",
+        "barryvdh/laravel-debugbar": "^2.2",
+        "barryvdh/laravel-ide-helper": "*",
         "fideloper/proxy": "~3.3",
+        "firebase/php-jwt": "^5.0",
+        "guzzlehttp/guzzle": "~6.0",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
-
-         "predis/predis" :  "*",
-        "qiniu/php-sdk": "*",
-        "guzzlehttp/guzzle": "~6.0",
-        "barryvdh/laravel-cors": "^0.9.2"
-
+        "overtrue/easy-sms": "^0.0.9",
+        "overtrue/wechat": "*",
+        "predis/predis": "*",
+        "qiniu/php-sdk": "*"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

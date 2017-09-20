@@ -13,6 +13,25 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+
+
+
+Route::group(['namespace' => 'Api'], function () {
+
+
+    //API接口版本V1
+    Route::group(['namespace' => 'V1', 'prefix' => 'v1'], function () {
+        //测试接口页面
+
+        Route::resource('/article', 'ArticleController');
+
+
+        Route::post("/qiniu/upload", "QiniuController@upload");
+
+
+    });
+
 });

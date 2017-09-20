@@ -48,7 +48,13 @@
                 </ul>
             </li>
 
+            <li ><a href="#"><i class="fa fa-link"></i> <span>内容管理</span></a>
 
+                <ul class="treeview-menu">
+                    <li class="article"><a href="/admin/article" >文章管理</a></li>
+                    <li class="article_category"><a href="/admin/article_category" >文章分类</a></li>
+                </ul>
+            </li>
 
         </ul><!-- /.sidebar-menu -->
     </section>

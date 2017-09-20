@@ -13,14 +13,12 @@ class Article extends Model
 
 
     protected $table = 'iz_article';
-    protected $fillable = ["title","content"];
+    protected $fillable = ["title","content","description","is_top","is_hot","is_rec","cid"];
 
 
-    public function __construct()
-    {
-        echo "init";
-        echo request("u");
-
-    }
+//    public function __construct()
+//    {
+//
+//    }
 
 }

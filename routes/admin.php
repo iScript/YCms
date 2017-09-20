@@ -30,4 +30,7 @@ Route::group(['middleware' => ['admin:admin']], function () {
     Route::post('role/{id}/permissions',['as'=>'admin.role.permissions','uses'=>'RoleController@storePermissions']);
     Route::resource('permission', 'PermissionController');
 
+    Route::resource('article', 'ArticleController');
+    Route::resource('article_category', 'ArticleCategoryController');
+
 });
